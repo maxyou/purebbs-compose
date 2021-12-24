@@ -154,6 +154,7 @@ fun App() {
                         .background(Color(0XFFE3DAC9))
                         .padding(16.dp)
                         .fillMaxSize(),
+                    contentAlignment = Alignment.Center
                 ) {
                     Text(
                         text = result.value,
