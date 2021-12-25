@@ -153,14 +153,22 @@ fun App() {
             content = {
 
                 Box(
-                    modifier = Modifier
-                        .height(500.dp)
-                        .width(300.dp)
-                        .background(colorResource(R.color.purple_500)),
-                    contentAlignment = Alignment.TopEnd
-                ) {
-                    Text("Text")
+                    modifier = Modifier//.align(Alignment.Center)
+                        .fillMaxSize()
+                        .background(colorResource(R.color.purple_200)),
+                ){
+                    Box(
+                        modifier = Modifier.align(Alignment.Center)
+                            .height(500.dp)
+                            .width(300.dp)
+                            .background(colorResource(R.color.purple_500)),
+                        contentAlignment = Alignment.TopEnd
+                    ) {
+                        Text("Text")
+                    }
+
                 }
+
 
 
             //                Column(
