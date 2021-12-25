@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -16,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -41,9 +43,10 @@ fun App() {
         val backstackEntry = navController.currentBackStackEntryAsState()
 
         val result = remember { mutableStateOf("") }
-        val expanded = remember { mutableStateOf(false)}
+        val expanded = remember { mutableStateOf(false) }
         val liked = remember { mutableStateOf(true) }
         Scaffold(
+            backgroundColor = colorResource(R.color.purple_200),
             topBar = {
                 TopAppBar(
                     title = {
@@ -72,9 +75,9 @@ fun App() {
                             checked = liked.value,
                             onCheckedChange = {
                                 liked.value = it
-                                if (liked.value){
+                                if (liked.value) {
                                     result.value = "Liked"
-                                }else{
+                                } else {
                                     result.value = "Unliked"
                                 }
                             }
@@ -147,22 +150,63 @@ fun App() {
                     elevation = AppBarDefaults.TopAppBarElevation
                 )
             },
-
             content = {
+
                 Box(
-                    Modifier
-                        .background(Color(0XFFE3DAC9))
-                        .padding(16.dp)
-                        .fillMaxSize(),
-                    contentAlignment = Alignment.Center
+                    modifier = Modifier
+                        .height(500.dp)
+                        .width(300.dp)
+                        .background(colorResource(R.color.purple_500)),
+                    contentAlignment = Alignment.TopEnd
                 ) {
-                    Text(
-                        text = result.value,
-                        fontSize = 22.sp,
-                        fontFamily = FontFamily.Serif,
-                        modifier = Modifier.align(Alignment.Center)
-                    )
+                    Text("Text")
                 }
+
+
+            //                Column(
+//                    modifier = Modifier.fillMaxWidth().fillMaxHeight().padding(10.dp)
+////                        .height(800.dp)
+////                        .width(300.dp)
+//                        .background(colorResource(R.color.purple_500)),
+//                    verticalArrangement = Arrangement.Center,
+//                    horizontalAlignment = Alignment.CenterHorizontally
+//                ) {
+//
+//
+//
+//                }
+//                    Surface(
+//                        modifier = Modifier
+//                            .height(100.dp)
+//                            .width(200.dp),
+//                        color = MaterialTheme.colors.background,
+//                    ) {
+//                        Text("text")
+//                    }
+
+//                Column {
+//                    Text(
+//                        text = result.value,
+//                        fontSize = 22.sp,
+//                        fontFamily = FontFamily.Serif,
+//                        modifier = Modifier.align(Alignment.CenterHorizontally)
+//                    )                    
+//                }
+
+//                Box(
+//                    Modifier
+//                        .background(Color(0XFFE3DAC9))
+//                        .padding(16.dp)
+//                        .fillMaxSize(),
+//                    contentAlignment = Alignment.Center
+//                ) {
+//                    Text(
+//                        text = result.value,
+//                        fontSize = 22.sp,
+//                        fontFamily = FontFamily.Serif,
+//                        modifier = Modifier.align(Alignment.Center)
+//                    )
+//                }
             }
         )
 //        Scaffold(
