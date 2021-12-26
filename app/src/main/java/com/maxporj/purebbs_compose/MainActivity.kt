@@ -45,6 +45,7 @@ fun App() {
         val result = remember { mutableStateOf("") }
         val expanded = remember { mutableStateOf(false) }
         val liked = remember { mutableStateOf(true) }
+
         Scaffold(
             backgroundColor = colorResource(R.color.purple_200),
             topBar = {
@@ -52,7 +53,6 @@ fun App() {
                     title = {
                         Text(text = "Top app bar")
                     },
-
                     navigationIcon = {
                         // show drawer icon
                         IconButton(
@@ -63,7 +63,6 @@ fun App() {
                             Icon(Icons.Filled.Menu, contentDescription = "")
                         }
                     },
-
                     actions = {
                         IconButton(onClick = {
                             result.value = " Play icon clicked"
@@ -150,108 +149,12 @@ fun App() {
                     elevation = AppBarDefaults.TopAppBarElevation
                 )
             },
-            content = {
+        ) {
 
-                Box(
-                    modifier = Modifier//.align(Alignment.Center)
-                        .fillMaxSize()
-                        .background(colorResource(R.color.purple_200)),
-                ){
-                    Box(
-                        modifier = Modifier.align(Alignment.Center)
-                            .height(500.dp)
-                            .width(300.dp)
-                            .background(colorResource(R.color.purple_500)),
-                        contentAlignment = Alignment.TopEnd
-                    ) {
-                        Text("Text")
-                    }
+            innerPadding ->
+            GetNavHost(navController, modifier = Modifier.padding(innerPadding))
 
-                }
-
-
-
-            //                Column(
-//                    modifier = Modifier.fillMaxWidth().fillMaxHeight().padding(10.dp)
-////                        .height(800.dp)
-////                        .width(300.dp)
-//                        .background(colorResource(R.color.purple_500)),
-//                    verticalArrangement = Arrangement.Center,
-//                    horizontalAlignment = Alignment.CenterHorizontally
-//                ) {
-//
-//
-//
-//                }
-//                    Surface(
-//                        modifier = Modifier
-//                            .height(100.dp)
-//                            .width(200.dp),
-//                        color = MaterialTheme.colors.background,
-//                    ) {
-//                        Text("text")
-//                    }
-
-//                Column {
-//                    Text(
-//                        text = result.value,
-//                        fontSize = 22.sp,
-//                        fontFamily = FontFamily.Serif,
-//                        modifier = Modifier.align(Alignment.CenterHorizontally)
-//                    )                    
-//                }
-
-//                Box(
-//                    Modifier
-//                        .background(Color(0XFFE3DAC9))
-//                        .padding(16.dp)
-//                        .fillMaxSize(),
-//                    contentAlignment = Alignment.Center
-//                ) {
-//                    Text(
-//                        text = result.value,
-//                        fontSize = 22.sp,
-//                        fontFamily = FontFamily.Serif,
-//                        modifier = Modifier.align(Alignment.Center)
-//                    )
-//                }
-            }
-        )
-//        Scaffold(
-//            topBar = {
-//                TopAppBar(
-//                    title = {
-//                        Text(text = "app bar")
-//                    },
-//                    navigationIcon = {
-//                        IconButton(onClick = { /* doSomething() */ }) {
-//                            Icon(Icons.Filled.Menu, contentDescription = null)
-//                        }
-//                    },
-//                    actions = {
-//                        // RowScope here, so these icons will be placed horizontally
-//                        IconButton(onClick = { /* doSomething() */ }) {
-//                            Icon(Icons.Filled.Create, contentDescription = "Localized description")
-//                        }
-//                        IconButton(onClick = { /* doSomething() */ }) {
-//                            Icon(Icons.Filled.Favorite, contentDescription = "Localized description")
-//                        }
-//                        IconButton(onClick = { /* doSomething() */ }) {
-//                            Icon(Icons.Filled.Delete, contentDescription = "Localized description")
-//                        }
-//                        IconButton(onClick = { /* doSomething() */ }) {
-//                            Icon(Icons.Filled.Settings, contentDescription = "Localized description")
-//                        }
-//                        IconButton(onClick = { /* doSomething() */ }) {
-//                            Icon(Icons.Filled.Share, contentDescription = "Localized description")
-//                        }
-//                    }
-//                )
-//            }
-//        ) {
-//            innerPadding ->
-//            GetNavHost(navController, modifier = Modifier.padding(innerPadding))
-//        }
+        }
     }
 }
 

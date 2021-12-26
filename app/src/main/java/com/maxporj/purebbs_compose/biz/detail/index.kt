@@ -12,11 +12,11 @@ import com.maxporj.purebbs_compose.route.Page
 
 
 @Composable
-fun DetailLayout(navController: NavHostController){
+fun DetailLayout(navController: NavHostController, id:String?){
     val context = LocalContext.current
 
     Text(
-        text = "Post Detail",
+        text = "Post Detail, id:${id}",
         modifier = Modifier.clickable {
             Toast.makeText(context, "OnClick", Toast.LENGTH_LONG).show()
             Log.v("OnClick", "OnClick ");

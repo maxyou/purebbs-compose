@@ -23,6 +23,6 @@ fun PostLayout(navController: NavHostController){
         modifier = Modifier.clickable {
             Toast.makeText(context, "OnClick", Toast.LENGTH_LONG).show()
             Log.v("OnClick", "OnClick ");
-            navController.navigate(Page.PostDetail.name)
+            navController.navigate("${Page.PostDetail.name}/123")
     })
 }
