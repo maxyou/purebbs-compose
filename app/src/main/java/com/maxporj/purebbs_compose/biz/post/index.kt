@@ -17,12 +17,13 @@ import com.maxporj.purebbs_compose.route.Page
 fun PostLayout(navController: NavHostController){
 
     val context = LocalContext.current
+    val id = "12345"
 
     Text(
         text = "Post List",
         modifier = Modifier.clickable {
             Toast.makeText(context, "OnClick", Toast.LENGTH_LONG).show()
             Log.v("OnClick", "OnClick ");
-            navController.navigate("${Page.PostDetail.name}/123")
+            navController.navigate("${Page.PostDetail.name}/${id}")
     })
 }
