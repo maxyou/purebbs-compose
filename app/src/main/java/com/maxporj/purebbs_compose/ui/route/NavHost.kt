@@ -1,4 +1,4 @@
-package com.maxporj.purebbs_compose.route
+package com.maxporj.purebbs_compose.ui.route
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -7,8 +7,8 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.maxporj.purebbs_compose.biz.detail.DetailLayout
-import com.maxporj.purebbs_compose.biz.post.PostLayout
+import com.maxporj.purebbs_compose.ui.detail.DetailLayout
+import com.maxporj.purebbs_compose.ui.post.PostLayout
 
 enum class Page(val title: String) {
     PostList("post list"),

@@ -1,4 +1,4 @@
-package com.maxporj.purebbs_compose.biz.detail
+package com.maxporj.purebbs_compose.ui.detail
 
 import android.util.Log
 import android.widget.Toast
