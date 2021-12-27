@@ -25,7 +25,9 @@ fun GetNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
         composable(
             Page.PostList.name,
         ) {
-            PostLayout(navController)
+            PostLayout {
+                navController.navigate(it)
+            }
         }
         composable(
             "${Page.PostDetail.name}/{id}",
@@ -35,7 +37,9 @@ fun GetNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
                 }
             )
         ) {
-            DetailLayout(navController, it.arguments?.getString("id"))
+            DetailLayout(it.arguments?.getString("id")){
+                navController.popBackStack()
+            }
         }
     }
 }

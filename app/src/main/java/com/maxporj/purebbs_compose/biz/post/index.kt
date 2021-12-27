@@ -14,7 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import com.maxporj.purebbs_compose.route.Page
 
 @Composable
-fun PostLayout(navController: NavHostController){
+fun PostLayout(goToDetail:(String)->Unit){
 
     val context = LocalContext.current
     val id = "12345"
@@ -24,6 +24,6 @@ fun PostLayout(navController: NavHostController){
         modifier = Modifier.clickable {
             Toast.makeText(context, "OnClick", Toast.LENGTH_LONG).show()
             Log.v("OnClick", "OnClick ");
-            navController.navigate("${Page.PostDetail.name}/${id}")
+            goToDetail("${Page.PostDetail.name}/${id}")
     })
 }

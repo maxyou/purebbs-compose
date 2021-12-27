@@ -7,12 +7,10 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.navigation.NavHostController
-import com.maxporj.purebbs_compose.route.Page
 
 
 @Composable
-fun DetailLayout(navController: NavHostController, id:String?){
+fun DetailLayout(id:String?, backToPost:()->Unit){
     val context = LocalContext.current
 
     Text(
@@ -20,6 +18,6 @@ fun DetailLayout(navController: NavHostController, id:String?){
         modifier = Modifier.clickable {
             Toast.makeText(context, "OnClick", Toast.LENGTH_LONG).show()
             Log.v("OnClick", "OnClick ");
-            navController.navigate(Page.PostList.name)
+            backToPost()
         })
 }
