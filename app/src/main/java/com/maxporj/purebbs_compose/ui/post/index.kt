@@ -13,7 +13,7 @@ import com.maxporj.purebbs_compose.ui.route.Page
 
 @Composable
 fun PostLayout(
-    viewModel: MyViewModel = viewModel(),
+    myViewModel: MyViewModel = viewModel(),
     goToDetail:(String)->Unit
 ){
 
@@ -21,10 +21,15 @@ fun PostLayout(
     val id = "12345"
 
     Text(
-        text = "Post List",
+        text = "Post List, post count: ${myViewModel.postCount}, detail count: ${myViewModel.detailCount}",
+
         modifier = Modifier.clickable {
+
             Toast.makeText(context, "OnClick", Toast.LENGTH_LONG).show()
             Log.v("OnClick", "OnClick ");
+
+            myViewModel.postCount++
+
             goToDetail("${Page.PostDetail.name}/${id}")
     })
 }

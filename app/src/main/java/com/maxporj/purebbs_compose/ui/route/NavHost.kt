@@ -37,7 +37,9 @@ fun GetNavHost(navController: NavHostController, modifier: Modifier = Modifier) 
                 }
             )
         ) {
-            DetailLayout(it.arguments?.getString("id")){
+            DetailLayout(
+                id = it.arguments?.getString("id")
+            ){
                 navController.popBackStack()
             }
         }
