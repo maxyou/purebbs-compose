@@ -7,10 +7,15 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import com.maxporj.purebbs_compose.config.MyViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.maxporj.purebbs_compose.ui.route.Page
 
 @Composable
-fun PostLayout(goToDetail:(String)->Unit){
+fun PostLayout(
+    viewModel: MyViewModel = viewModel(),
+    goToDetail:(String)->Unit
+){
 
     val context = LocalContext.current
     val id = "12345"

@@ -1,7 +1,6 @@
 package com.maxporj.purebbs_compose.ui.detail
 
 import androidx.lifecycle.LiveData
-import androidx.paging.DataSource
 import androidx.room.*
 
 @Dao
@@ -21,8 +20,8 @@ interface DetailDao {
     @Query("SELECT * from detail_table")
     fun getDetailList(): LiveData<List<Detail>>
 
-    @Query("SELECT * from detail_table")
-    fun getDetailDataSource(): DataSource.Factory<Int, Detail>
+//    @Query("SELECT * from detail_table")
+//    fun getDetailDataSource(): DataSource.Factory<Int, Detail>
 //
 //    @Query("SELECT * from detail_table ORDER BY detailTitle ASC")
 //    suspend fun getDetailList(): LiveData<List<DetailBrief>> //----------- 编译报错

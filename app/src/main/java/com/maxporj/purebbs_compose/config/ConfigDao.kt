@@ -1,10 +1,12 @@
 package com.maxporj.purebbs_compose.config
 
 import androidx.lifecycle.LiveData
+import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
+@Dao
 interface ConfigDao {
     @Query("SELECT * from category_table ORDER BY idStr ASC")
     fun getCategoryList(): LiveData<List<Category>>

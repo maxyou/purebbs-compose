@@ -5,7 +5,11 @@ import android.util.Log
 import androidx.room.*
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.google.gson.Gson
+import com.maxporj.purebbs_compose.config.Config.DATABASE_NAME
 import com.maxporj.purebbs_compose.ui.detail.Detail
+import com.maxporj.purebbs_compose.ui.detail.DetailDao
+import com.maxporj.purebbs_compose.ui.post.Post
+import com.maxporj.purebbs_compose.ui.post.PostDao
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
