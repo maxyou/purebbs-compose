@@ -18,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -27,19 +28,23 @@ import com.maxporj.purebbs_compose.ui.theme.PurebbscomposeTheme
 
 class MainActivity : ComponentActivity() {
 
+    private val myViewModel by lazy {
+        ViewModelProvider(this).get(MyViewModel::class.java)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            App()
+            App(myViewModel)
         }
     }
 }
 
 @Composable
-fun App() {
+fun App(myViewModel: MyViewModel) {
     PurebbscomposeTheme {
 
-        val myViewModel: MyViewModel = viewModel(LocalContext.current as ComponentActivity)
+//        val myViewModel: MyViewModel = viewModel(LocalContext.current as ComponentActivity)
 
         val navController = rememberNavController()
         val backstackEntry = navController.currentBackStackEntryAsState()
