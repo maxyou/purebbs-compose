@@ -21,15 +21,10 @@ fun DetailLayout(
     val context = LocalContext.current
 
     Text(
-        text = "Post Detail, id:${id}, post count: ${myViewModel.postCount}, detail count: ${myViewModel.detailCount}",
+        text = "Post Detail, id:${id}",
 
         modifier = Modifier.clickable {
-
-            Toast.makeText(context, "OnClick", Toast.LENGTH_LONG).show()
-            Log.v("OnClick", "OnClick ");
-
-            myViewModel.detailCount++
-
             backToPost()
-        })
+        }
+    )
 }

@@ -15,14 +15,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.maxporj.purebbs_compose.config.MyViewModel
 import com.maxporj.purebbs_compose.ui.route.GetNavHost
 import com.maxporj.purebbs_compose.ui.theme.PurebbscomposeTheme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -34,6 +38,9 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun App() {
     PurebbscomposeTheme {
+
+        val myViewModel: MyViewModel = viewModel(LocalContext.current as ComponentActivity)
+
         val navController = rememberNavController()
         val backstackEntry = navController.currentBackStackEntryAsState()
 
@@ -61,6 +68,7 @@ fun App() {
                     actions = {
                         IconButton(onClick = {
                             result.value = " Play icon clicked"
+                            myViewModel.clearLoading()
                         }) {
                             Icon(Icons.Filled.PlayArrow, contentDescription = "")
                         }
