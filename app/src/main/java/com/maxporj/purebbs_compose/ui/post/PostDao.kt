@@ -2,6 +2,8 @@ package com.maxporj.purebbs_compose.ui.post
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 
 @Dao
 interface PostDao {
@@ -17,8 +19,11 @@ interface PostDao {
 //    @Query("SELECT * from post_table ORDER BY postTitle ASC")
 //    suspend fun getPostList(): List<PostBrief>
 //
+//    @Query("SELECT * from post_table")
+//    fun getPostList(): LiveData<List<Post>>
+
     @Query("SELECT * from post_table")
-    fun getPostList(): LiveData<List<Post>>
+    fun getPostList(): Flow<List<Post>>
 
 //    @Query("SELECT * from post_table")
 //    fun getPostDataSource(): DataSource.Factory<Int, Post>

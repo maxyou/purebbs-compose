@@ -107,6 +107,9 @@ fun App(myViewModel: MyViewModel) {
                             IconButton(onClick = {
                                 expanded.value = true
                                 result.value = "More icon clicked"
+
+                                myViewModel.load()
+
                             }) {
                                 Icon(
                                     Icons.Filled.MoreVert,
