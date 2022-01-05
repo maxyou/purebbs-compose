@@ -52,7 +52,7 @@ class Converters {
     }
 }
 
-@Database(entities = arrayOf(Detail::class, Post::class, Category::class), version = 1, exportSchema = false)
+@Database(entities = arrayOf(Detail::class, Post::class, Category::class), version = 2, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class MyRoomDatabase : RoomDatabase(){
 
