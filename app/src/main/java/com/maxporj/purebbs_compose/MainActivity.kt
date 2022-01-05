@@ -64,10 +64,20 @@ fun App(myViewModel: MyViewModel) {
                         // show drawer icon
                         IconButton(
                             onClick = {
-                                result.value = "Drawer icon clicked"
+//                                result.value = "Drawer icon clicked"
+                                navController.navigateUp()
+                                myViewModel.canNavigateBack.value = false
                             }
                         ) {
-                            Icon(Icons.Filled.Menu, contentDescription = "")
+//                            if (navController.previousBackStackEntry != null){
+                            if (myViewModel.canNavigateBack.value){
+                                Icon(
+                                    imageVector = Icons.Filled.ArrowBack,
+                                    contentDescription = "Back"
+                                )
+                            }else{
+                                Icon(Icons.Filled.Menu, contentDescription = "")
+                            }
                         }
                     },
                     actions = {

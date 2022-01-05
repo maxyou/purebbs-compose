@@ -78,7 +78,8 @@ fun PostList(posts: List<Post>?, goToDetail: (String) -> Unit, myViewModel: MyVi
                             .height(80.dp)
                             .fillMaxWidth()
                             .padding(5.dp)
-                            .background(color = Color(0xFF9CCC65)),
+                            .background(color = Color(0xFF9CCC65))
+                            .clickable { goToDetail("${Page.PostDetail.name}/${post.postId}") },
                         verticalAlignment = Alignment.CenterVertically
                     ) {
 
@@ -89,28 +90,22 @@ fun PostList(posts: List<Post>?, goToDetail: (String) -> Unit, myViewModel: MyVi
                             anonymous = post.anonymous,
                             isMyself = false
                         )
-                            val painter = rememberImagePainter(
-                                data = path,
-                                builder = {
-                                    crossfade(true)
-                                }
-                            )
+                        val painter = rememberImagePainter(
+                            data = path,
+                            builder = {
+                                crossfade(true)
+                            }
+                        )
 
-                            Image(
-                                painter = painter,
-                                contentDescription = "image",
-                                modifier = Modifier.fillMaxHeight()
-                                    .aspectRatio(1f)
-                                    .padding(10.dp)
-                                    .clip(CircleShape)
-                            )
-
-//                        Box (
-//                            modifier = Modifier.width(30.dp).height(30.dp).background(Color(0xff3388ff))
-//                        ){
-//
-//
-//                        }
+                        Image(
+                            painter = painter,
+                            contentDescription = "image",
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .aspectRatio(1f)
+                                .padding(10.dp)
+                                .clip(CircleShape)
+                        )
 
                         Text(
                             modifier = Modifier.padding(12.dp),

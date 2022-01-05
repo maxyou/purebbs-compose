@@ -1,5 +1,7 @@
 package com.maxporj.purebbs_compose.config
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.maxporj.purebbs_compose.config.Config.application
@@ -17,6 +19,8 @@ class MyViewModel: ViewModel() {
         MyRoomDatabase.getDatabase(application, viewModelScope).detailDao(),
         HttpService.api
     )
+
+    val canNavigateBack = mutableStateOf(false)
 
     val posts: Flow<List<Post>?> = myRepository.posts
 
