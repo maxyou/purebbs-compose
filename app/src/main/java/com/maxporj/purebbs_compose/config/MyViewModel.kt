@@ -1,6 +1,7 @@
 package com.maxporj.purebbs_compose.config
 
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,13 +15,17 @@ import kotlinx.coroutines.flow.StateFlow
 class MyViewModel: ViewModel() {
 
     val myRepository:MyRepository = MyRepository(
-        viewModelScope,
+        this,
         MyRoomDatabase.getDatabase(application, viewModelScope).postDao(),
         MyRoomDatabase.getDatabase(application, viewModelScope).detailDao(),
         HttpService.api
     )
 
     val canNavigateBack = mutableStateOf(false)
+
+    val postList = mutableStateOf(emptyList<Post>())
+    val postPageSize by mutableStateOf(10)
+    val postPageIndex by mutableStateOf(0)
 
     val posts: Flow<List<Post>?> = myRepository.posts
 
@@ -31,7 +36,8 @@ class MyViewModel: ViewModel() {
         _isLoading.value = false
     }
     fun load(){
-        myRepository.load()
+//        myRepository.load()
+        myRepository.loadPostList(postPageSize, postPageIndex)
     }
 
 }
