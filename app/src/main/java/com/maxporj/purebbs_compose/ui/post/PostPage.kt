@@ -23,6 +23,7 @@ import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.maxporj.purebbs_compose.config.Config
 import com.maxporj.purebbs_compose.config.MyViewModel
+import com.maxporj.purebbs_compose.ui.common.PageRound
 import com.maxporj.purebbs_compose.ui.route.Page
 
 @Composable
@@ -33,8 +34,35 @@ fun PostLayout(
     val posts by myViewModel.posts.collectAsState(initial = null)
     val isLoading by myViewModel.isLoading.collectAsState()
 
+
+    val totalDocs = 500
+    val pageSize = 10
+
+    Column (
+        modifier = Modifier.padding(15.dp)
+            ){
+
+        PageRound(current = 1, ext = 3, totalDocs = totalDocs, pageSize = pageSize)
+        PageRound(current = 2, ext = 3, totalDocs = totalDocs, pageSize = pageSize)
+        PageRound(current = 3, ext = 3, totalDocs = totalDocs, pageSize = pageSize)
+        PageRound(current = 4, ext = 3, totalDocs = totalDocs, pageSize = pageSize)
+        PageRound(current = 5, ext = 3, totalDocs = totalDocs, pageSize = pageSize)
+        PageRound(current = 6, ext = 3, totalDocs = totalDocs, pageSize = pageSize)
+        PageRound(current = 7, ext = 3, totalDocs = totalDocs, pageSize = pageSize)
+        PageRound(current = 15, ext = 3, totalDocs = totalDocs, pageSize = pageSize)
+        PageRound(current = 25, ext = 3, totalDocs = totalDocs, pageSize = pageSize)
+        PageRound(current = 35, ext = 3, totalDocs = totalDocs, pageSize = pageSize)
+        PageRound(current = 44, ext = 3, totalDocs = totalDocs, pageSize = pageSize)
+        PageRound(current = 45, ext = 3, totalDocs = totalDocs, pageSize = pageSize)
+        PageRound(current = 46, ext = 3, totalDocs = totalDocs, pageSize = pageSize)
+        PageRound(current = 47, ext = 3, totalDocs = totalDocs, pageSize = pageSize)
+        PageRound(current = 48, ext = 3, totalDocs = totalDocs, pageSize = pageSize)
+        PageRound(current = 49, ext = 3, totalDocs = totalDocs, pageSize = pageSize)
+        PageRound(current = 50, ext = 3, totalDocs = totalDocs, pageSize = pageSize)
+
 //    PostList(posts, goToDetail, myViewModel)
-    PostList(myViewModel.postList.value, goToDetail, myViewModel)
+        PostList(myViewModel.postList.value, goToDetail, myViewModel)
+    }
 }
 
 @ExperimentalCoilApi
