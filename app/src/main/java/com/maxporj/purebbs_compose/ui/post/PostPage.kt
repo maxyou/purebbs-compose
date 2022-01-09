@@ -9,9 +9,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,6 +23,7 @@ import com.maxporj.purebbs_compose.config.Config
 import com.maxporj.purebbs_compose.config.MyViewModel
 import com.maxporj.purebbs_compose.ui.common.PageRound
 import com.maxporj.purebbs_compose.ui.route.Page
+import kotlin.collections.mutableSetOf
 
 @Composable
 fun PostLayout(
@@ -34,6 +33,9 @@ fun PostLayout(
     val posts by myViewModel.posts.collectAsState(initial = null)
     val isLoading by myViewModel.isLoading.collectAsState()
 
+    var current by remember {
+        mutableStateOf(1)
+    }
 
     val totalDocs = 500
     val pageSize = 10
@@ -42,23 +44,7 @@ fun PostLayout(
         modifier = Modifier.padding(15.dp)
             ){
 
-        PageRound(current = 1, ext = 3, totalDocs = totalDocs, pageSize = pageSize)
-        PageRound(current = 2, ext = 3, totalDocs = totalDocs, pageSize = pageSize)
-        PageRound(current = 3, ext = 3, totalDocs = totalDocs, pageSize = pageSize)
-        PageRound(current = 4, ext = 3, totalDocs = totalDocs, pageSize = pageSize)
-        PageRound(current = 5, ext = 3, totalDocs = totalDocs, pageSize = pageSize)
-        PageRound(current = 6, ext = 3, totalDocs = totalDocs, pageSize = pageSize)
-        PageRound(current = 7, ext = 3, totalDocs = totalDocs, pageSize = pageSize)
-        PageRound(current = 15, ext = 3, totalDocs = totalDocs, pageSize = pageSize)
-        PageRound(current = 25, ext = 3, totalDocs = totalDocs, pageSize = pageSize)
-        PageRound(current = 35, ext = 3, totalDocs = totalDocs, pageSize = pageSize)
-        PageRound(current = 44, ext = 3, totalDocs = totalDocs, pageSize = pageSize)
-        PageRound(current = 45, ext = 3, totalDocs = totalDocs, pageSize = pageSize)
-        PageRound(current = 46, ext = 3, totalDocs = totalDocs, pageSize = pageSize)
-        PageRound(current = 47, ext = 3, totalDocs = totalDocs, pageSize = pageSize)
-        PageRound(current = 48, ext = 3, totalDocs = totalDocs, pageSize = pageSize)
-        PageRound(current = 49, ext = 3, totalDocs = totalDocs, pageSize = pageSize)
-        PageRound(current = 50, ext = 3, totalDocs = totalDocs, pageSize = pageSize)
+        PageRound(current = current, ext = 2, totalDocs = totalDocs, pageSize = pageSize) { current = it}
 
 //    PostList(posts, goToDetail, myViewModel)
         PostList(myViewModel.postList.value, goToDetail, myViewModel)

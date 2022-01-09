@@ -1,17 +1,21 @@
 package com.maxporj.purebbs_compose.ui.common
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import kotlin.math.ceil
 
 @Composable
-fun PageRound(current:Int, ext:Int, totalDocs:Int, pageSize:Int ) {
+fun PageRound(current:Int, ext:Int, totalDocs:Int, pageSize:Int, onClick:(Int)->Unit ) {
 
     var maxRight = ceil(totalDocs.toDouble() / pageSize.toDouble())
     val maxRightInt = maxRight.toInt()
@@ -22,36 +26,44 @@ fun PageRound(current:Int, ext:Int, totalDocs:Int, pageSize:Int ) {
 
         if(ba[0] != 1){
             Row {
-                Text(text = "${if(1==current)'/' else ' '}1${if(1==current)'/' else ' '}")
+                RoundButton(1, 1==current, onClick)
                 if(ba[0] != 2){
-                    Text(text = "...")
+                    RoundInterval()
                 }
             }
         }
 
         ba.map {
-            Text(text = "${if(it==current)'/' else ' '}${it}${if(it==current)'/' else ' '}")
+            RoundButton(it, it==current, onClick)
         }
 
         if(ba[ba.size-1] != maxRightInt){
             Row {
                 if(ba[ba.size-1] != maxRightInt-1){
-                    Text(text = "...")
+                    RoundInterval()
                 }
-                Text(text = "${if(maxRightInt==current)'/' else ' '}${maxRightInt}${if(maxRightInt==current)'/' else ' '}")
+                RoundButton(maxRightInt, maxRightInt==current, onClick)
             }
         }
     }
 }
 
+@Composable
+fun RoundButton(count:Int, isCurrent:Boolean, onClick:(Int)->Unit){
+    Text(
+        modifier = Modifier.width(35.dp)
+            .clickable { onClick(count) }
+            .padding(2.dp)
+            .background(if(isCurrent) Color(0xFF9CCC65) else Color(0xFFbC4Ca5)),
+        text = "${count}",
+        textAlign = TextAlign.Center, )
+}
+@Composable
+fun RoundInterval(){
+    Text(text = "...")
+}
+
 fun calcPaginateArray(current: Int, ext: Int, maxRight: Int): MutableList<Int> {
-    // console.log('------------calcPaginateArray---------------')
-    // console.log(typeof current)
-    // console.log(current)
-    // console.log(ext)
-    // console.log(maxRight)
-    // required:
-    //  current <= maxright
 
     val ba = mutableListOf<Int>(current)
     for (i in 0 until ext) {
