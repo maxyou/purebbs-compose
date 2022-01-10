@@ -44,7 +44,9 @@ fun PostLayout(
         modifier = Modifier.padding(15.dp)
             ){
 
-        PageRound(current = current, ext = 2, totalDocs = totalDocs, pageSize = pageSize) { current = it}
+        Box(modifier = Modifier.fillMaxWidth().height(40.dp)){
+            PageRound(current = current, ext = 2, totalDocs = totalDocs, pageSize = pageSize) { current = it}
+        }
 
 //    PostList(posts, goToDetail, myViewModel)
         PostList(myViewModel.postList.value, goToDetail, myViewModel)

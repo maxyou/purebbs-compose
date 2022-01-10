@@ -15,52 +15,72 @@ import androidx.compose.ui.unit.dp
 import kotlin.math.ceil
 
 @Composable
-fun PageRound(current:Int, ext:Int, totalDocs:Int, pageSize:Int, onClick:(Int)->Unit ) {
+fun PageRound(current: Int, ext: Int, totalDocs: Int, pageSize: Int, onClick: (Int) -> Unit) {
 
     var maxRight = ceil(totalDocs.toDouble() / pageSize.toDouble())
     val maxRightInt = maxRight.toInt()
 
     val ba = calcPaginateArray(current = current, ext = ext, maxRight = maxRightInt)
 
-    Row {
+    Row(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xff88cccc)),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ) {
 
-        if(ba[0] != 1){
-            Row {
-                RoundButton(1, 1==current, onClick)
-                if(ba[0] != 2){
-                    RoundInterval()
-                }
+        if (ba[0] != 1) {
+            Box(modifier = Modifier.weight(1f)) { RoundButton(1, 1 == current, onClick) }
+            if (ba[0] != 2) {
+                Box(modifier = Modifier.weight(1f)) { RoundInterval() }
             }
         }
 
         ba.map {
-            RoundButton(it, it==current, onClick)
+            Box(modifier = Modifier.weight(1f)) {
+                RoundButton(
+                    it,
+                    it == current,
+                    onClick
+                )
+            }
         }
 
-        if(ba[ba.size-1] != maxRightInt){
-            Row {
-                if(ba[ba.size-1] != maxRightInt-1){
-                    RoundInterval()
-                }
-                RoundButton(maxRightInt, maxRightInt==current, onClick)
+        if (ba[ba.size - 1] != maxRightInt) {
+            if (ba[ba.size - 1] != maxRightInt - 1) {
+                Box(modifier = Modifier.weight(1f)) { RoundInterval() }
+            }
+            Box(modifier = Modifier.weight(1f)) {
+                RoundButton(
+                    maxRightInt,
+                    maxRightInt == current,
+                    onClick
+                )
             }
         }
     }
 }
 
 @Composable
-fun RoundButton(count:Int, isCurrent:Boolean, onClick:(Int)->Unit){
-    Text(
-        modifier = Modifier.width(35.dp)
+fun RoundButton(count: Int, isCurrent: Boolean, onClick: (Int) -> Unit) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
             .clickable { onClick(count) }
             .padding(2.dp)
-            .background(if(isCurrent) Color(0xFF9CCC65) else Color(0xFFbC4Ca5)),
-        text = "${count}",
-        textAlign = TextAlign.Center, )
+            .background(if (isCurrent) Color(0xFF9CCC65) else Color(0xFFbC4Ca5)),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(text = "${count}")
+    }
 }
+
 @Composable
-fun RoundInterval(){
-    Text(text = "...")
+fun RoundInterval() {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Text(text = "---")
+    }
 }
 
 fun calcPaginateArray(current: Int, ext: Int, maxRight: Int): MutableList<Int> {
