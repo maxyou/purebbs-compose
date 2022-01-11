@@ -54,15 +54,31 @@ fun PostLayout(
                 totalDocs = totalDocs,
                 pageSize = pageSize,
                 onClick = { current = it },
-                RoundButton = { count, isCurrent, onClick ->
-                    RoundButton(count = count, isCurrent = isCurrent, onClick = onClick)
-                },
-                RoundInterval = { RoundInterval() }
+                RoundButton = roundButton,
+//                RoundInterval = { RoundInterval() }
+                RoundInterval = greet
             )
         }
 
 //    PostList(posts, goToDetail, myViewModel)
         PostList(myViewModel.postList.value, goToDetail, myViewModel)
+    }
+}
+
+val greet = @Composable {
+
+}
+
+val roundButton = @Composable { count: Int, isCurrent: Boolean, onClick: (Int) -> Unit ->
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .clickable { onClick(count) }
+            .padding(2.dp)
+            .background(if (isCurrent) Color(0xFF9CCC65) else Color(0xFFbC4Ca5)),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(text = "${count}")
     }
 }
 
@@ -144,3 +160,4 @@ fun RoundInterval() {
         Text(text = "---")
     }
 }
+
