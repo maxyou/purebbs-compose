@@ -54,9 +54,8 @@ fun PostLayout(
                 totalDocs = totalDocs,
                 pageSize = pageSize,
                 onClick = { current = it },
-                RoundButton = roundButton,
-//                RoundInterval = { RoundInterval() }
-                RoundInterval = greet
+                RoundButton = RoundButton,
+                RoundInterval = RoundInterval
             )
         }
 
@@ -65,11 +64,13 @@ fun PostLayout(
     }
 }
 
-val greet = @Composable {
-
+val RoundInterval = @Composable {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Text(text = "---")
+    }
 }
 
-val roundButton = @Composable { count: Int, isCurrent: Boolean, onClick: (Int) -> Unit ->
+val RoundButton = @Composable { count: Int, isCurrent: Boolean, onClick: (Int) -> Unit ->
     Box(
         modifier = Modifier
             .fillMaxSize()
