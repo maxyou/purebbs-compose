@@ -23,7 +23,6 @@ import com.maxporj.purebbs_compose.config.Config
 import com.maxporj.purebbs_compose.config.MyViewModel
 import com.maxporj.purebbs_compose.ui.common.PageRound
 import com.maxporj.purebbs_compose.ui.route.Page
-import kotlin.collections.mutableSetOf
 
 @Composable
 fun PostLayout(
@@ -40,12 +39,26 @@ fun PostLayout(
     val totalDocs = 500
     val pageSize = 10
 
-    Column (
+    Column(
         modifier = Modifier.padding(15.dp)
-            ){
+    ) {
 
-        Box(modifier = Modifier.fillMaxWidth().height(40.dp)){
-            PageRound(current = current, ext = 2, totalDocs = totalDocs, pageSize = pageSize) { current = it}
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(40.dp)
+        ) {
+            PageRound(
+                current = current,
+                ext = 2,
+                totalDocs = totalDocs,
+                pageSize = pageSize,
+                onClick = { current = it },
+                RoundButton = { count, isCurrent, onClick ->
+                    RoundButton(count = count, isCurrent = isCurrent, onClick = onClick)
+                },
+                RoundInterval = { RoundInterval() }
+            )
         }
 
 //    PostList(posts, goToDetail, myViewModel)
@@ -108,4 +121,26 @@ fun PostList(posts: List<Post>?, goToDetail: (String) -> Unit, myViewModel: MyVi
         }
     }
 
+}
+
+
+@Composable
+fun RoundButton(count: Int, isCurrent: Boolean, onClick: (Int) -> Unit) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .clickable { onClick(count) }
+            .padding(2.dp)
+            .background(if (isCurrent) Color(0xFF9CCC65) else Color(0xFFbC4Ca5)),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(text = "${count}")
+    }
+}
+
+@Composable
+fun RoundInterval() {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Text(text = "---")
+    }
 }

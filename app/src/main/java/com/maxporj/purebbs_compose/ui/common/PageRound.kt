@@ -1,21 +1,23 @@
 package com.maxporj.purebbs_compose.ui.common
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import kotlin.math.ceil
 
 @Composable
-fun PageRound(current: Int, ext: Int, totalDocs: Int, pageSize: Int, onClick: (Int) -> Unit) {
+fun PageRound(
+    current: Int,
+    ext: Int,
+    totalDocs: Int,
+    pageSize: Int,
+    onClick: (Int) -> Unit,
+    RoundButton: @Composable (Int, Boolean, (Int) -> Unit)->Unit,
+    RoundInterval: @Composable () -> Unit,
+) {
 
     var maxRight = ceil(totalDocs.toDouble() / pageSize.toDouble())
     val maxRightInt = maxRight.toInt()
@@ -62,26 +64,6 @@ fun PageRound(current: Int, ext: Int, totalDocs: Int, pageSize: Int, onClick: (I
     }
 }
 
-@Composable
-fun RoundButton(count: Int, isCurrent: Boolean, onClick: (Int) -> Unit) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .clickable { onClick(count) }
-            .padding(2.dp)
-            .background(if (isCurrent) Color(0xFF9CCC65) else Color(0xFFbC4Ca5)),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(text = "${count}")
-    }
-}
-
-@Composable
-fun RoundInterval() {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text(text = "---")
-    }
-}
 
 fun calcPaginateArray(current: Int, ext: Int, maxRight: Int): MutableList<Int> {
 
