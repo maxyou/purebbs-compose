@@ -83,7 +83,6 @@ fun App(myViewModel: MyViewModel) {
                     actions = {
                         IconButton(onClick = {
                             result.value = " Play icon clicked"
-                            myViewModel.clearLoading()
                         }) {
                             Icon(Icons.Filled.PlayArrow, contentDescription = "")
                         }
@@ -118,7 +117,7 @@ fun App(myViewModel: MyViewModel) {
                                 expanded.value = true
                                 result.value = "More icon clicked"
 
-                                myViewModel.load()
+//                                myViewModel.load()
 
                             }) {
                                 Icon(

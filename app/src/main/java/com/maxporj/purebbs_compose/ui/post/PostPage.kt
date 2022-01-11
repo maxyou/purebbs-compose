@@ -29,15 +29,10 @@ fun PostLayout(
     myViewModel: MyViewModel = viewModel(LocalContext.current as ComponentActivity),
     goToDetail: (String) -> Unit
 ) {
-    val posts by myViewModel.posts.collectAsState(initial = null)
-    val isLoading by myViewModel.isLoading.collectAsState()
 
-    var current by remember {
-        mutableStateOf(1)
-    }
-
-    val totalDocs = 500
-    val pageSize = 10
+    val current by myViewModel.current.collectAsState()
+    val totalDocs by myViewModel.totalDocs.collectAsState()
+    val pageSize by myViewModel.pageSize.collectAsState()
 
     Column(
         modifier = Modifier.padding(15.dp)
@@ -53,7 +48,7 @@ fun PostLayout(
                 ext = 2,
                 totalDocs = totalDocs,
                 pageSize = pageSize,
-                onClick = { current = it },
+                onClick = { myViewModel.current.value = it },
                 RoundButton = RoundButton,
                 RoundInterval = RoundInterval
             )

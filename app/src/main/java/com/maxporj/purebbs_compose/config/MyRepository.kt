@@ -1,10 +1,6 @@
 package com.maxporj.purebbs_compose.config
 
 import android.util.Log
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.maxporj.purebbs_compose.net.HttpApi
@@ -12,12 +8,8 @@ import com.maxporj.purebbs_compose.net.HttpData
 import com.maxporj.purebbs_compose.ui.detail.DetailDao
 import com.maxporj.purebbs_compose.ui.post.Post
 import com.maxporj.purebbs_compose.ui.post.PostDao
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
@@ -35,21 +27,24 @@ class MyRepository(
 
     }
 
-    fun loadPostList(postPageSize:Int, postPageIndex:Int){
+    fun loadPostList(pageSize:Int, current:Int){
         myViewModel.viewModelScope.launch(Dispatchers.IO) {
-            val data = httpGetPostPage(postPageSize, postPageIndex)
+            val data = httpGetPostPage(pageSize, current)
             if(data != null){
                 postDao.insertList(data.data)
                 myViewModel.postList.value = data.data
             }
         }
     }
-    private suspend fun httpGetPostPage(postPageSize:Int, postPageIndex:Int): HttpData.PostListRet?{
+    private suspend fun httpGetPostPage(pageSize:Int, current:Int): HttpData.PostListRet?{
 
         var data: HttpData.PostListRet? = null
 
 //        val postCount = postDao.getPostCount()
-        Log.d("PureBBS", "<PostBoundaryCallback> getPostCount(): $postPageIndex")
+        Log.d("PureBBS", "<PostBoundaryCallback> getPostCount(): $current")
+
+        val offset = pageSize * (if(current >= 1) (current - 1) else 0)
+
         val query = HttpData.PostListQuery(
             query = if (Config.categoryCurrentLive.value == Config.CATEGORY_ALL || Config.categoryCurrentLive.value == null)
                 null //category of all
@@ -57,8 +52,8 @@ class MyRepository(
                 category = Config.categoryCurrentLive.value!!
             ),
             options = HttpData.PostListQuery.Options(
-                offset = postPageIndex,
-                limit = postPageSize,
+                offset = offset,
+                limit = pageSize,
                 sort = HttpData.PostListQuery.Options.Sort(allUpdated = -1),
                 select = "source oauth title content postId author authorId commentNum likeUser updated created avatarFileName lastReplyId lastReplyName lastReplyTime allUpdated stickTop category anonymous extend"
             )
