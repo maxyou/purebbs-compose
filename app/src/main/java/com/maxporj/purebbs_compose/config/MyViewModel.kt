@@ -28,7 +28,7 @@ class MyViewModel: ViewModel() {
 //    val postPageIndex by mutableStateOf(0)
 
     var current = MutableStateFlow<Int>(1)
-    var totalDocs = MutableStateFlow<Int>(300)
+    var totalDocs = MutableStateFlow<Int>(10)
     var pageSize = MutableStateFlow<Int>(10)
 
     init {

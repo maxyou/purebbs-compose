@@ -41,7 +41,8 @@ fun PostLayout(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(40.dp)
+                .height(40.dp),
+            contentAlignment = Alignment.CenterEnd
         ) {
             PageRound(
                 current = current,

@@ -31,7 +31,8 @@ class MyRepository(
         myViewModel.viewModelScope.launch(Dispatchers.IO) {
             val data = httpGetPostPage(pageSize, current)
             if(data != null){
-                postDao.insertList(data.data)
+//                postDao.insertList(data.data)
+                myViewModel.totalDocs.value = data.totalDocs
                 myViewModel.postList.value = data.data
             }
         }

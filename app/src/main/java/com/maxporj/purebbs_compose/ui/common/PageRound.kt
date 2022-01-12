@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import kotlin.math.ceil
 
 @Composable
@@ -26,21 +27,23 @@ fun PageRound(
 
     Row(
         modifier = Modifier
-            .fillMaxSize()
+//            .fillMaxSize()
             .background(Color(0xff88cccc)),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
 
+        val modifier = Modifier.widthIn(min = 30.dp, max = 40.dp)//.weight(1f)
+
         if (ba[0] != 1) {
-            Box(modifier = Modifier.weight(1f)) { RoundButton(1, 1 == current, onClick) }
+            Box(modifier = modifier) { RoundButton(1, 1 == current, onClick) }
             if (ba[0] != 2) {
-                Box(modifier = Modifier.weight(1f)) { RoundInterval() }
+                Box(modifier = modifier) { RoundInterval() }
             }
         }
 
         ba.map {
-            Box(modifier = Modifier.weight(1f)) {
+            Box(modifier = modifier) {
                 RoundButton(
                     it,
                     it == current,
@@ -51,9 +54,9 @@ fun PageRound(
 
         if (ba[ba.size - 1] != maxRightInt) {
             if (ba[ba.size - 1] != maxRightInt - 1) {
-                Box(modifier = Modifier.weight(1f)) { RoundInterval() }
+                Box(modifier = modifier) { RoundInterval() }
             }
-            Box(modifier = Modifier.weight(1f)) {
+            Box(modifier = modifier) {
                 RoundButton(
                     maxRightInt,
                     maxRightInt == current,
