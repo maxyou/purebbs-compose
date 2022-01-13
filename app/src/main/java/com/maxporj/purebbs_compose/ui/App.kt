@@ -34,7 +34,7 @@ fun App(myViewModel: MyViewModel) {
 
         val result = remember { mutableStateOf("") }
         val expanded = remember { mutableStateOf(false) }
-        val liked = remember { mutableStateOf(true) }
+        val openDialog = remember { mutableStateOf(false)  }
 
         Scaffold(
             backgroundColor = colorResource(R.color.purple_200),
@@ -46,51 +46,52 @@ fun App(myViewModel: MyViewModel) {
                     navigationIcon = {
                         IconButton(
                             onClick = {
-                                if(myViewModel.canNavigateBack.value){
+            //                if(navController.previousBackStackEntry != null){
+                                if (myViewModel.canNavigateBack.value) {
                                     navController.navigateUp()
                                     myViewModel.canNavigateBack.value = false
                                 }
                             }
                         ) {
-//                            if (navController.previousBackStackEntry != null){
-                            if (myViewModel.canNavigateBack.value){
+            //            if (navController.previousBackStackEntry != null){
+                            if (myViewModel.canNavigateBack.value) {
                                 Icon(
                                     imageVector = Icons.Filled.ArrowBack,
                                     contentDescription = "Back"
                                 )
-                            }else{
+                            } else {
                                 Icon(Icons.Filled.Menu, contentDescription = "")
                             }
                         }
                     },
                     actions = {
-                        IconButton(onClick = {
-                            result.value = " Play icon clicked"
-                        }) {
-                            Icon(Icons.Filled.PlayArrow, contentDescription = "")
-                        }
+//                        IconButton(onClick = {
+//                            result.value = " Play icon clicked"
+//                        }) {
+//                            Icon(Icons.Filled.PlayArrow, contentDescription = "")
+//                        }
 
-                        IconToggleButton(
-                            checked = liked.value,
-                            onCheckedChange = {
-                                liked.value = it
-                                if (liked.value) {
-                                    result.value = "Liked"
-                                } else {
-                                    result.value = "Unliked"
-                                }
-                            }
-                        ) {
-                            val tint by animateColorAsState(
-                                if (liked.value) Color(0xFF7BB661)
-                                else Color.LightGray
-                            )
-                            Icon(
-                                Icons.Filled.Favorite,
-                                contentDescription = "Localized description",
-                                tint = tint
-                            )
-                        }
+//                        IconToggleButton(
+//                            checked = liked.value,
+//                            onCheckedChange = {
+//                                liked.value = it
+//                                if (liked.value) {
+//                                    result.value = "Liked"
+//                                } else {
+//                                    result.value = "Unliked"
+//                                }
+//                            }
+//                        ) {
+//                            val tint by animateColorAsState(
+//                                if (liked.value) Color(0xFF7BB661)
+//                                else Color.LightGray
+//                            )
+//                            Icon(
+//                                Icons.Filled.Favorite,
+//                                contentDescription = "Localized description",
+//                                tint = tint
+//                            )
+//                        }
 
                         Box(
                             Modifier
@@ -99,9 +100,6 @@ fun App(myViewModel: MyViewModel) {
                             IconButton(onClick = {
                                 expanded.value = true
                                 result.value = "More icon clicked"
-
-//                                myViewModel.load()
-
                             }) {
                                 Icon(
                                     Icons.Filled.MoreVert,
@@ -115,9 +113,12 @@ fun App(myViewModel: MyViewModel) {
                             ) {
                                 DropdownMenuItem(onClick = {
                                     expanded.value = false
-                                    result.value = "First item clicked"
+                                    result.value = "goto login"
+
+                                    openDialog.value = true
+
                                 }) {
-                                    Text("First Item")
+                                    Text("Login")
                                 }
 
                                 DropdownMenuItem(onClick = {
@@ -158,8 +159,83 @@ fun App(myViewModel: MyViewModel) {
             GetNavHost(navController, modifier = Modifier.padding(innerPadding))
 
         }
+
+        if (openDialog.value) {
+            AlertDialog(
+                onDismissRequest = {
+                    // Dismiss the dialog when the user clicks outside the dialog or on the back
+                    // button. If you want to disable that functionality, simply use an empty
+                    // onCloseRequest.
+                    openDialog.value = false
+                },
+                title = {
+                    Text(text = "Dialog Title")
+                },
+                text = {
+                    Text("Here is a text ")
+                },
+                confirmButton = {
+                    Button(
+
+                        onClick = {
+                            openDialog.value = false
+                        }) {
+                        Text("This is the Confirm Button")
+                    }
+                },
+                dismissButton = {
+                    Button(
+
+                        onClick = {
+                            openDialog.value = false
+                        }) {
+                        Text("This is the dismiss Button")
+                    }
+                }
+            )
+        }
     }
 }
+
+
+
+//@Composable
+//fun LoginDialog(){
+//
+//    AlertDialog(
+//        onDismissRequest = {
+//            // Dismiss the dialog when the user clicks outside the dialog or on the back
+//            // button. If you want to disable that functionality, simply use an empty
+//            // onCloseRequest.
+//            openDialog.value = false
+//        },
+//        title = {
+//            Text(text = "Dialog Title")
+//        },
+//        text = {
+//            Text("Here is a text ")
+//        },
+//        confirmButton = {
+//            Button(
+//
+//                onClick = {
+//                    openDialog.value = false
+//                }) {
+//                Text("This is the Confirm Button")
+//            }
+//        },
+//        dismissButton = {
+//            Button(
+//
+//                onClick = {
+//                    openDialog.value = false
+//                }) {
+//                Text("This is the dismiss Button")
+//            }
+//        }
+//    )
+//
+//}
 
 @Composable
 fun Greeting(name: String) {
