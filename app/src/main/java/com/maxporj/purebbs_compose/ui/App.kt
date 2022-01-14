@@ -1,9 +1,8 @@
 package com.maxporj.purebbs_compose.ui
 
-import android.widget.Toast
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -14,6 +13,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -44,24 +46,21 @@ private fun ShowLogin(openDialog: MutableState<Boolean>) {
 
     val thisContext = LocalContext.current
 
+    var name by remember { mutableStateOf("") }
+    var pwd by remember { mutableStateOf("") }
+    var pwdVisibility by remember { mutableStateOf(false) }
+
     if (openDialog.value) {
         LoginDialog(
-            onDismiss = {
-                openDialog.value = !openDialog.value
-                Toast.makeText(thisContext, "Dialog dismissed!", Toast.LENGTH_SHORT)
-                    .show()
-            },
-            onNegativeClick = {
-                openDialog.value = !openDialog.value
-                Toast.makeText(thisContext, "Negative Button Clicked!", Toast.LENGTH_SHORT)
-                    .show()
-
-            },
-            onPositiveClick = { color ->
-                openDialog.value = !openDialog.value
-                Toast.makeText(thisContext, "Selected color: $color", Toast.LENGTH_SHORT)
-                    .show()
-            }
+            onDismiss = {openDialog.value = !openDialog.value},
+            onNegativeClick = { openDialog.value = !openDialog.value },
+            onPositiveClick = { },
+            name = name,
+            onNameChange = { name = it },
+            pwd = pwd,
+            onPwdChange = { pwd = it},
+            pwdVisibility = pwdVisibility,
+            onPwdVisibilityChange = { pwdVisibility = it}
         )
     }
 }
@@ -70,18 +69,14 @@ private fun ShowLogin(openDialog: MutableState<Boolean>) {
 private fun LoginDialog(
     onDismiss: () -> Unit,
     onNegativeClick: () -> Unit,
-    onPositiveClick: (Color) -> Unit
+    onPositiveClick: () -> Unit,
+    name:String,
+    onNameChange:(String)->Unit,
+    pwd:String,
+    onPwdChange:(String)->Unit,
+    pwdVisibility:Boolean,
+    onPwdVisibilityChange:(Boolean)->Unit,
 ) {
-    var red by remember { mutableStateOf(0f) }
-    var green by remember { mutableStateOf(0f) }
-    var blue by remember { mutableStateOf(0f) }
-
-    val color = Color(
-        red = red.toInt(),
-        green = green.toInt(),
-        blue = blue.toInt(),
-        alpha = 255
-    )
 
     Dialog(onDismissRequest = onDismiss) {
 
@@ -100,50 +95,45 @@ private fun LoginDialog(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
 
-                // Color Selection
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
+                OutlinedTextField(
+                    value = name,
+                    onValueChange = {
+                        onNameChange(it)
+                    },
+                    singleLine = true,
+                    maxLines = 1,
+                    label = { Text("Name") }
+                )
 
+                Spacer(modifier = Modifier.height(8.dp))
 
-                    Column {
+                OutlinedTextField(
+                    value = pwd,
+                    onValueChange = {
+                        onPwdChange(it)
+                    },
+                    singleLine = true,
+                    maxLines = 1,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    visualTransformation = if (pwdVisibility) VisualTransformation.None else PasswordVisualTransformation(),
+                    label = { Text("Password") }
+                )
 
-                        Text(text = "Red ${red.toInt()}")
-                        Slider(
-                            value = red,
-                            onValueChange = { red = it },
-                            valueRange = 0f..255f,
-                            onValueChangeFinished = {}
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        Text(text = "Green ${green.toInt()}")
-                        Slider(
-                            value = green,
-                            onValueChange = { green = it },
-                            valueRange = 0f..255f,
-                            onValueChangeFinished = {}
-                        )
-                        Spacer(modifier = Modifier.height(8.dp))
-
-                        Text(text = "Blue ${blue.toInt()}")
-                        Slider(
-                            value = blue,
-                            onValueChange = { blue = it },
-                            valueRange = 0f..255f,
-                            onValueChangeFinished = {}
-                        )
-
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Surface(
-                            border = BorderStroke(1.dp, Color.DarkGray),
-                            color = color,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(40.dp)
-                        ) {}
-                    }
+                Row {
+                    Checkbox(
+                        // below line we are setting
+                        // the state of checkbox.
+                        checked = pwdVisibility,
+                        // below line is use to add padding
+                        // to our checkbox.
+                        modifier = Modifier.padding(16.dp),
+                        // below line is use to add on check
+                        // change to our checkbox.
+                        onCheckedChange = { onPwdVisibilityChange(it) },
+                    )
+                    // below line is use to add text to our check box and we are
+                    // adding padding to our text of checkbox
+                    Text(text = "View Password", modifier = Modifier.padding(16.dp))
                 }
 
                 // Buttons
@@ -151,14 +141,11 @@ private fun LoginDialog(
                     horizontalArrangement = Arrangement.End,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-
                     TextButton(onClick = onNegativeClick) {
                         Text(text = "CANCEL")
                     }
                     Spacer(modifier = Modifier.width(4.dp))
-                    TextButton(onClick = {
-                        onPositiveClick(color)
-                    }) {
+                    TextButton(onClick = onPositiveClick) {
                         Text(text = "OK")
                     }
                 }
