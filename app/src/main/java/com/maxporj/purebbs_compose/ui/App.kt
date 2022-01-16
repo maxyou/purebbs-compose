@@ -37,32 +37,33 @@ fun App(myViewModel: MyViewModel) {
 
         ShowScaffold(myViewModel, navController, openDialog)
 
-        ShowLogin(openDialog)
+        if (openDialog.value) {
+            ShowLogin {
+                openDialog.value = !openDialog.value
+            }
+        }
     }
 }
 
 @Composable
-private fun ShowLogin(openDialog: MutableState<Boolean>) {
+private fun ShowLogin(onDismiss: () -> Unit) {
 
     val thisContext = LocalContext.current
-
     var name by remember { mutableStateOf("") }
     var pwd by remember { mutableStateOf("") }
     var pwdVisibility by remember { mutableStateOf(false) }
 
-    if (openDialog.value) {
-        LoginDialog(
-            onDismiss = {openDialog.value = !openDialog.value},
-            onNegativeClick = { openDialog.value = !openDialog.value },
-            onPositiveClick = { },
-            name = name,
-            onNameChange = { name = it },
-            pwd = pwd,
-            onPwdChange = { pwd = it},
-            pwdVisibility = pwdVisibility,
-            onPwdVisibilityChange = { pwdVisibility = it}
-        )
-    }
+    LoginDialog(
+        onDismiss = onDismiss,
+        onNegativeClick = onDismiss,
+        onPositiveClick = { },
+        name = name,
+        onNameChange = { name = it },
+        pwd = pwd,
+        onPwdChange = { pwd = it},
+        pwdVisibility = pwdVisibility,
+        onPwdVisibilityChange = { pwdVisibility = it}
+    )
 }
 
 @Composable
@@ -88,7 +89,7 @@ private fun LoginDialog(
             Column(modifier = Modifier.padding(8.dp)) {
 
                 Text(
-                    text = "Select Color",
+                    text = "Login",
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp,
                     modifier = Modifier.padding(8.dp)
