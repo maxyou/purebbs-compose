@@ -2,10 +2,8 @@ package com.maxporj.purebbs_compose.ui
 
 import android.util.Log
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -14,7 +12,6 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
@@ -62,12 +59,12 @@ private fun ShowLogin(onDismiss: () -> Unit) {
     var pwd by remember { mutableStateOf("") }
     var code by remember { mutableStateOf("") }
     var pwdVisibility by remember { mutableStateOf(false) }
-    var count by remember { mutableStateOf(0) }
+    var confirmCount by remember { mutableStateOf(0) }
 
-    LaunchedEffect(count){
-        if(count != 0){
+    LaunchedEffect(confirmCount){
+        if(confirmCount != 0){
 
-
+            Log.d("PureBBS", "confirmCount: ${confirmCount}")
 
         }
     }
@@ -76,7 +73,7 @@ private fun ShowLogin(onDismiss: () -> Unit) {
     LoginDialog(
         onDismiss = onDismiss,
         onNegativeClick = onDismiss,
-        onPositiveClick = { },
+        onPositiveClick = { confirmCount++ },
         name = name,
         onNameChange = { name = it },
         pwd = pwd,
@@ -104,7 +101,7 @@ private fun LoginDialog(
 ) {
     Dialog(onDismissRequest = onDismiss) {
 
-        var random by remember { mutableStateOf(0) }
+        var codeDownloadCount by remember { mutableStateOf(0) }
 
         Card(
             elevation = 8.dp,
@@ -172,7 +169,7 @@ private fun LoginDialog(
                     label = { Text("Code") }
                 )
 
-                val path = Config.calcRandomCodeImgPath(random)
+                val path = Config.calcRandomCodeImgPath(codeDownloadCount)
 //                Log.d("PureBBS", "random code img path: ${path}")
                 val painter = rememberImagePainter(
                     data = path,
@@ -185,7 +182,7 @@ private fun LoginDialog(
                     painter = painter,
                     contentDescription = "image",
                     modifier = Modifier
-                        .clickable { random++ }
+                        .clickable { codeDownloadCount++ }
                         .width(250.dp)
                         .height(75.dp)
                         .wrapContentSize(align = Alignment.CenterStart, unbounded = false)
