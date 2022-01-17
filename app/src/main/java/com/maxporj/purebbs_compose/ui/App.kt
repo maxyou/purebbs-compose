@@ -3,6 +3,7 @@ package com.maxporj.purebbs_compose.ui
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -184,6 +185,7 @@ private fun LoginDialog(
                     painter = painter,
                     contentDescription = "image",
                     modifier = Modifier
+                        .clickable { random++ }
                         .width(250.dp)
                         .height(75.dp)
                         .wrapContentSize(align = Alignment.CenterStart, unbounded = false)
