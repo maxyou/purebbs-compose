@@ -4,11 +4,11 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface HttpApi {
+
     @GET("detail/comment/getpage")
     suspend fun getDetailByPaginate(
         @Query("pageInfo") pageInfo: String
     ): HttpData.DetailListRet
-
 
     @GET("post/getpage")
     suspend fun getPostByPaginate(

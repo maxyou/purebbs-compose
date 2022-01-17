@@ -65,4 +65,8 @@ object Config {
             }
         }
     }
+
+    fun calcRandomCodeImgPath(random:Int = 0):String{
+        return URL(BASE_URL,"tool/verify?mt=${random}").toString()
+    }
 }

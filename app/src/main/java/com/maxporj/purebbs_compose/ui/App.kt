@@ -1,6 +1,10 @@
 package com.maxporj.purebbs_compose.ui
 
+import android.util.Log
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -9,6 +13,7 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
@@ -22,7 +27,10 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import coil.compose.rememberImagePainter
+import coil.decode.SvgDecoder
 import com.maxporj.purebbs_compose.R
+import com.maxporj.purebbs_compose.config.Config
 import com.maxporj.purebbs_compose.config.MyViewModel
 import com.maxporj.purebbs_compose.ui.route.GetNavHost
 import com.maxporj.purebbs_compose.ui.theme.PurebbscomposeTheme
@@ -51,7 +59,18 @@ private fun ShowLogin(onDismiss: () -> Unit) {
     val thisContext = LocalContext.current
     var name by remember { mutableStateOf("") }
     var pwd by remember { mutableStateOf("") }
+    var code by remember { mutableStateOf("") }
     var pwdVisibility by remember { mutableStateOf(false) }
+    var count by remember { mutableStateOf(0) }
+
+    LaunchedEffect(count){
+        if(count != 0){
+
+
+
+        }
+    }
+
 
     LoginDialog(
         onDismiss = onDismiss,
@@ -61,6 +80,8 @@ private fun ShowLogin(onDismiss: () -> Unit) {
         onNameChange = { name = it },
         pwd = pwd,
         onPwdChange = { pwd = it},
+        code = code,
+        onCodeChange = { code = it},
         pwdVisibility = pwdVisibility,
         onPwdVisibilityChange = { pwdVisibility = it}
     )
@@ -75,11 +96,14 @@ private fun LoginDialog(
     onNameChange:(String)->Unit,
     pwd:String,
     onPwdChange:(String)->Unit,
+    code:String,
+    onCodeChange:(String)->Unit,
     pwdVisibility:Boolean,
     onPwdVisibilityChange:(Boolean)->Unit,
 ) {
-
     Dialog(onDismissRequest = onDismiss) {
+
+        var random by remember { mutableStateOf(0) }
 
         Card(
             elevation = 8.dp,
@@ -136,6 +160,37 @@ private fun LoginDialog(
                     // adding padding to our text of checkbox
                     Text(text = "View Password", modifier = Modifier.padding(16.dp))
                 }
+
+                OutlinedTextField(
+                    value = code,
+                    onValueChange = {
+                        onCodeChange(it)
+                    },
+                    singleLine = true,
+                    maxLines = 1,
+                    label = { Text("Code") }
+                )
+
+                val path = Config.calcRandomCodeImgPath(random)
+//                Log.d("PureBBS", "random code img path: ${path}")
+                val painter = rememberImagePainter(
+                    data = path,
+                    builder = {
+                        decoder(SvgDecoder(LocalContext.current))
+                    }
+                )
+
+                Image(
+                    painter = painter,
+                    contentDescription = "image",
+                    modifier = Modifier
+                        .width(250.dp)
+                        .height(75.dp)
+                        .wrapContentSize(align = Alignment.CenterStart, unbounded = false)
+                        .padding(10.dp)
+//                        .background(Color(0xff00ffff))
+//                        .clip(CircleShape)
+                )
 
                 // Buttons
                 Row(
