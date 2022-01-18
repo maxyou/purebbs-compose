@@ -8,8 +8,8 @@ import java.net.URL
 object Config {
     lateinit var application: MyApplication
 
-    //    val BASE_URL: URL = URL("http://192.168.31.70:3001")
-    val BASE_URL: URL = URL("http://purebbs.com")
+        val BASE_URL: URL = URL("http://192.168.31.70:3001")
+//    val BASE_URL: URL = URL("http://purebbs.com")
     val PATH_AVATAR:String = "user/avatar/"
     val CATEGORY_ALL:String = "category_all"
 //    var categoryCurrent:String = Config.CATEGORY_ALL

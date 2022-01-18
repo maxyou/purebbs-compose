@@ -13,7 +13,6 @@ import java.io.IOException
 
 
 object HttpService {
-    val api by lazy {
         val interceptor: Interceptor = object : Interceptor {
             @Throws(IOException::class)
             override fun intercept(chain: Interceptor.Chain): Response {
@@ -33,6 +32,8 @@ object HttpService {
             .addNetworkInterceptor(interceptor)
             .cookieJar(PersistentCookieJar(SetCookieCache(), SharedPrefsCookiePersistor(Config.application)))
             .build()
+
+    val api by lazy {
 
         Retrofit.Builder()
             .client(okHttpClient)

@@ -25,8 +25,12 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import coil.ImageLoader
+import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import coil.decode.SvgDecoder
+import coil.imageLoader
+import coil.request.ImageRequest
 import com.maxporj.purebbs_compose.R
 import com.maxporj.purebbs_compose.config.Config
 import com.maxporj.purebbs_compose.config.MyViewModel
@@ -113,6 +117,15 @@ private fun LoginDialog(
 
         var codeDownloadCount by remember { mutableStateOf(0) }
 
+        val path = Config.calcRandomCodeImgPath(codeDownloadCount)
+        Log.d("PureBBS", "random code img path: ${path}")
+        val painter = rememberImagePainter(
+            data = path,
+            builder = {
+                decoder(SvgDecoder(LocalContext.current))
+            }
+        )
+
         Card(
             elevation = 8.dp,
             shape = RoundedCornerShape(12.dp)
@@ -177,15 +190,6 @@ private fun LoginDialog(
                     singleLine = true,
                     maxLines = 1,
                     label = { Text("Code") }
-                )
-
-                val path = Config.calcRandomCodeImgPath(codeDownloadCount)
-//                Log.d("PureBBS", "random code img path: ${path}")
-                val painter = rememberImagePainter(
-                    data = path,
-                    builder = {
-                        decoder(SvgDecoder(LocalContext.current))
-                    }
                 )
 
                 Image(
