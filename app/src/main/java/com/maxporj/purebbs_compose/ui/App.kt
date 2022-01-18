@@ -30,6 +30,8 @@ import coil.decode.SvgDecoder
 import com.maxporj.purebbs_compose.R
 import com.maxporj.purebbs_compose.config.Config
 import com.maxporj.purebbs_compose.config.MyViewModel
+import com.maxporj.purebbs_compose.net.HttpData
+import com.maxporj.purebbs_compose.net.HttpService
 import com.maxporj.purebbs_compose.ui.route.GetNavHost
 import com.maxporj.purebbs_compose.ui.theme.PurebbscomposeTheme
 
@@ -64,7 +66,15 @@ private fun ShowLogin(onDismiss: () -> Unit) {
     LaunchedEffect(confirmCount){
         if(confirmCount != 0){
 
-            Log.d("PureBBS", "confirmCount: ${confirmCount}")
+            Log.d("PureBBS", "login confirm count: ${confirmCount}, name:${name}, pwd:${pwd}, code:${code}")
+
+            val data = HttpService.api.login(HttpData.LoginData(
+                name = name, password = pwd, code = code
+            ))
+
+            Log.d("PureBBS", "login return code: ${data.code}")
+            Log.d("PureBBS", "login return message: ${data.message}")
+            Log.d("PureBBS", "login return data: ${data.data.toString()}")
 
         }
     }

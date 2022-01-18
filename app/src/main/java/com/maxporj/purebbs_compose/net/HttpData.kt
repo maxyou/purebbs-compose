@@ -6,6 +6,24 @@ import com.maxporj.purebbs_compose.config.Category
 
 class HttpData {
 
+    data class LoginData(
+        val name:String,
+        val password:String,
+        val code:String
+    )
+
+    data class LoginReturn(
+        val code:Int,
+        val message:String,
+        val data:LoginRetrunData
+    ){
+        data class LoginRetrunData(
+            val name:String,
+            val _id:String,
+            val source:String,
+        )
+    }
+
     data class DetailListQuery(
         val query:PostID?,
         val options:Options
