@@ -15,13 +15,25 @@ class HttpData {
     data class LoginReturn(
         val code:Int,
         val message:String,
-        val data:LoginRetrunData
+        val data:Data
     ){
-        data class LoginRetrunData(
-            val name:String,
+        data class Data(
             val _id:String,
-            val source:String,
-        )
+            val uuid:String,
+            val name:String,
+            val email:String,
+            val role:String,
+            val updated:String,
+            val created:String,
+            val avatarFileName:String,
+            val setting:Setting
+        ){
+            data class Setting(
+                val language:String,
+                val postPageSize:Int,
+                val commentPageSize:Int
+            )
+        }
     }
 
     data class DetailListQuery(

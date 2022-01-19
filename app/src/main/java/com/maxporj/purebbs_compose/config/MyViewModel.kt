@@ -4,6 +4,7 @@ import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.maxporj.purebbs_compose.config.Config.application
+import com.maxporj.purebbs_compose.net.HttpData
 import com.maxporj.purebbs_compose.net.HttpService
 import com.maxporj.purebbs_compose.ui.post.Post
 import kotlinx.coroutines.flow.Flow
@@ -20,6 +21,8 @@ class MyViewModel: ViewModel() {
         MyRoomDatabase.getDatabase(application, viewModelScope).detailDao(),
         HttpService.api
     )
+
+    var loginRetrun = MutableStateFlow<HttpData.LoginReturn?>(null)
 
     val canNavigateBack = mutableStateOf(false)
 

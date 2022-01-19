@@ -9,18 +9,18 @@ import com.maxporj.purebbs_compose.net.HttpService
 
 class MyApplication: Application(), ImageLoaderFactory {
 
+    override fun newImageLoader(): ImageLoader {
+        return ImageLoader.Builder(applicationContext)
+            .crossfade(true)
+            .okHttpClient(HttpService.okHttpClient)
+            .build()
+    }
+
     override fun onCreate() {
         super.onCreate()
 
         Config.application = this
 
 //        Stetho.initializeWithDefaults(this)
-    }
-
-    override fun newImageLoader(): ImageLoader {
-        return ImageLoader.Builder(applicationContext)
-            .crossfade(true)
-            .okHttpClient(HttpService.okHttpClient)
-            .build()
     }
 }

@@ -11,7 +11,7 @@ interface HttpApi {
     @POST("user/login")
     suspend fun login(
         @Body loginData:HttpData.LoginData
-    ): HttpData.LoginReturn
+    ): HttpData.LoginReturn?
 
     @GET("detail/comment/getpage")
     suspend fun getDetailByPaginate(

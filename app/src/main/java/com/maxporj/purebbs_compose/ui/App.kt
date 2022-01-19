@@ -25,12 +25,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import coil.ImageLoader
-import coil.compose.ImagePainter
 import coil.compose.rememberImagePainter
 import coil.decode.SvgDecoder
-import coil.imageLoader
-import coil.request.ImageRequest
 import com.maxporj.purebbs_compose.R
 import com.maxporj.purebbs_compose.config.Config
 import com.maxporj.purebbs_compose.config.MyViewModel
@@ -50,7 +46,7 @@ fun App(myViewModel: MyViewModel) {
         ShowScaffold(myViewModel, navController, openDialog)
 
         if (openDialog.value) {
-            ShowLogin {
+            ShowLogin(myViewModel = myViewModel) {
                 openDialog.value = !openDialog.value
             }
         }
@@ -58,13 +54,15 @@ fun App(myViewModel: MyViewModel) {
 }
 
 @Composable
-private fun ShowLogin(onDismiss: () -> Unit) {
+private fun ShowLogin(myViewModel: MyViewModel, onDismiss: () -> Unit) {
 
     val thisContext = LocalContext.current
     var name by remember { mutableStateOf("") }
     var pwd by remember { mutableStateOf("") }
     var code by remember { mutableStateOf("") }
-    var pwdVisibility by remember { mutableStateOf(false) }
+    var showPwd by remember { mutableStateOf(false) }
+    var loginError by remember { mutableStateOf("") }
+    var showLoginError by remember { mutableStateOf(false) }
     var confirmCount by remember { mutableStateOf(0) }
 
     LaunchedEffect(confirmCount){
@@ -72,13 +70,26 @@ private fun ShowLogin(onDismiss: () -> Unit) {
 
             Log.d("PureBBS", "login confirm count: ${confirmCount}, name:${name}, pwd:${pwd}, code:${code}")
 
-            val data = HttpService.api.login(HttpData.LoginData(
+            val loginReturn = HttpService.api.login(HttpData.LoginData(
                 name = name, password = pwd, code = code
             ))
 
-            Log.d("PureBBS", "login return code: ${data.code}")
-            Log.d("PureBBS", "login return message: ${data.message}")
-            Log.d("PureBBS", "login return data: ${data.data.toString()}")
+            Log.d("PureBBS", "login return code: ${loginReturn?.code}")
+            Log.d("PureBBS", "login return message: ${loginReturn?.message}")
+            Log.d("PureBBS", "login return data: ${loginReturn?.data.toString()}")
+
+            if(loginReturn!=null){
+                if(loginReturn.code!=0){
+                    loginError = "failed: ${loginReturn.message}"
+                    showLoginError = true
+                }else{
+                    myViewModel.loginRetrun.value = loginReturn
+                    onDismiss()
+                }
+            }else{
+                loginError = "login return null"
+                showLoginError = true
+            }
 
         }
     }
@@ -94,8 +105,10 @@ private fun ShowLogin(onDismiss: () -> Unit) {
         onPwdChange = { pwd = it},
         code = code,
         onCodeChange = { code = it},
-        pwdVisibility = pwdVisibility,
-        onPwdVisibilityChange = { pwdVisibility = it}
+        showPwd = showPwd,
+        onShowPwdChange = { showPwd = it},
+        loginError = loginError,
+        showLoginError = showLoginError
     )
 }
 
@@ -110,15 +123,21 @@ private fun LoginDialog(
     onPwdChange:(String)->Unit,
     code:String,
     onCodeChange:(String)->Unit,
-    pwdVisibility:Boolean,
-    onPwdVisibilityChange:(Boolean)->Unit,
+    loginError:String,
+    showLoginError:Boolean,
+    showPwd:Boolean,
+    onShowPwdChange:(Boolean)->Unit,
 ) {
     Dialog(onDismissRequest = onDismiss) {
+
+        Log.d("PureBBS", "showLoginError: ${showLoginError}")
+        Log.d("PureBBS", "loginError: ${loginError}")
 
         var codeDownloadCount by remember { mutableStateOf(0) }
 
         val path = Config.calcRandomCodeImgPath(codeDownloadCount)
         Log.d("PureBBS", "random code img path: ${path}")
+
         val painter = rememberImagePainter(
             data = path,
             builder = {
@@ -161,7 +180,7 @@ private fun LoginDialog(
                     singleLine = true,
                     maxLines = 1,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                    visualTransformation = if (pwdVisibility) VisualTransformation.None else PasswordVisualTransformation(),
+                    visualTransformation = if (showPwd) VisualTransformation.None else PasswordVisualTransformation(),
                     label = { Text("Password") }
                 )
 
@@ -169,13 +188,13 @@ private fun LoginDialog(
                     Checkbox(
                         // below line we are setting
                         // the state of checkbox.
-                        checked = pwdVisibility,
+                        checked = showPwd,
                         // below line is use to add padding
                         // to our checkbox.
                         modifier = Modifier.padding(16.dp),
                         // below line is use to add on check
                         // change to our checkbox.
-                        onCheckedChange = { onPwdVisibilityChange(it) },
+                        onCheckedChange = { onShowPwdChange(it) },
                     )
                     // below line is use to add text to our check box and we are
                     // adding padding to our text of checkbox
@@ -201,9 +220,14 @@ private fun LoginDialog(
                         .height(75.dp)
                         .wrapContentSize(align = Alignment.CenterStart, unbounded = false)
                         .padding(10.dp)
-//                        .background(Color(0xff00ffff))
-//                        .clip(CircleShape)
                 )
+
+                Text(
+                    text = if(showLoginError) loginError else "",
+                    modifier = Modifier.padding(8.dp).height(30.dp).fillMaxWidth()
+                )
+//                if(showLoginError){
+//                }
 
                 // Buttons
                 Row(
@@ -218,6 +242,7 @@ private fun LoginDialog(
                         Text(text = "OK")
                     }
                 }
+
             }
         }
     }
