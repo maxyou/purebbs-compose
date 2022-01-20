@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -12,6 +13,7 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
@@ -83,7 +85,8 @@ private fun ShowLogin(myViewModel: MyViewModel, onDismiss: () -> Unit) {
                     loginError = "failed: ${loginReturn.message}"
                     showLoginError = true
                 }else{
-                    myViewModel.loginRetrun.value = loginReturn
+//                    myViewModel.loginRetrun.value = loginReturn
+                    myViewModel.userInfo.value = myViewModel.getUserInfoFromLogin(loginReturn)
                     onDismiss()
                 }
             }else{
@@ -224,7 +227,10 @@ private fun LoginDialog(
 
                 Text(
                     text = if(showLoginError) loginError else "",
-                    modifier = Modifier.padding(8.dp).height(30.dp).fillMaxWidth()
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .height(30.dp)
+                        .fillMaxWidth()
                 )
 //                if(showLoginError){
 //                }
@@ -254,6 +260,9 @@ private fun ShowScaffold(
     navController: NavHostController,
     openDialog: MutableState<Boolean>
 ) {
+//    val loginRetrun by myViewModel.loginRetrun.collectAsState()
+    val userInfo by myViewModel.userInfo.collectAsState()
+
     Scaffold(
         backgroundColor = colorResource(R.color.purple_200),
         topBar = {
@@ -282,12 +291,40 @@ private fun ShowScaffold(
                         }
                     }
                 },
+
                 actions = {
+
+                    if(userInfo!=null && userInfo!!.code == 0){
+
+                        val path = Config.calcTopAppBarAvatarPath(userInfo!!)
+
+                        val painter = rememberImagePainter(
+                            data = path,
+                            builder = {
+                                crossfade(true)
+                            }
+                        )
 //                        IconButton(onClick = {
-//                            result.value = " Play icon clicked"
+//
 //                        }) {
-//                            Icon(Icons.Filled.PlayArrow, contentDescription = "")
+//                            Icon(painter = painter,
+//                                contentDescription = "",
+//                                modifier = Modifier
+//                                .width(30.dp)
+//                                .aspectRatio(1f)
+//                                .clip(CircleShape))
 //                        }
+
+                        Image(
+                            painter = painter,
+                            contentDescription = "image",
+                            modifier = Modifier
+                                .clickable {  }
+                                .width(30.dp)
+                                .aspectRatio(1f)
+                                .clip(CircleShape)
+                        )
+                    }
 
 
                     Box(
@@ -352,54 +389,3 @@ private fun ShowScaffold(
     }
 }
 
-
-//@Composable
-//fun LoginDialog(){
-//
-//    AlertDialog(
-//        onDismissRequest = {
-//            // Dismiss the dialog when the user clicks outside the dialog or on the back
-//            // button. If you want to disable that functionality, simply use an empty
-//            // onCloseRequest.
-//            openDialog.value = false
-//        },
-//        title = {
-//            Text(text = "Dialog Title")
-//        },
-//        text = {
-//            Text("Here is a text ")
-//        },
-//        confirmButton = {
-//            Button(
-//
-//                onClick = {
-//                    openDialog.value = false
-//                }) {
-//                Text("This is the Confirm Button")
-//            }
-//        },
-//        dismissButton = {
-//            Button(
-//
-//                onClick = {
-//                    openDialog.value = false
-//                }) {
-//                Text("This is the dismiss Button")
-//            }
-//        }
-//    )
-//
-//}
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    PurebbscomposeTheme {
-        Greeting("Android")
-    }
-}

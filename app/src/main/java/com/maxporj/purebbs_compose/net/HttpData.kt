@@ -13,28 +13,82 @@ class HttpData {
     )
 
     data class LoginReturn(
-        val code:Int,
-        val message:String,
-        val data:Data
+        val code:Int? = null,
+        val message:String? = null,
+        val data:Data? = null,
     ){
         data class Data(
-            val _id:String,
-            val uuid:String,
-            val name:String,
-            val email:String,
-            val role:String,
-            val updated:String,
-            val created:String,
-            val avatarFileName:String,
-            val setting:Setting
+            val _id:String? = null,
+            val uuid:String? = null,
+            val name:String? = null,
+            val email:String? = null,
+            val role:String? = null,
+            val updated:String? = null,
+            val created:String? = null,
+            val avatarFileName:String? = null,
+            val setting:Setting? = null,
         ){
             data class Setting(
-                val language:String,
-                val postPageSize:Int,
-                val commentPageSize:Int
+                val language:String? = null,
+                val postPageSize:Int? = null,
+                val commentPageSize:Int? = null,
             )
         }
     }
+
+    data class RegisterReturn(
+        val code:Int? = null,
+        val message:String? = null,
+        val data:Data? = null,
+    ){
+        data class Data(
+            val _id:String? = null,
+            val uuid:String? = null,
+            val name:String? = null,
+            val email:String? = null,
+            val role:String? = null,
+            val updated:String? = null,
+            val created:String? = null,
+        )
+    }
+
+    data class UserStatusReturn(
+        val code:Int? = null,
+        val message:String? = null,
+        val data:Data? = null,
+    ){
+        data class Data(
+            val _id:String? = null,
+            val uuid:String? = null,
+            val name:String? = null,
+            val email:String? = null,
+            val role:String? = null,
+            val updated:String? = null,
+            val created:String? = null,
+            val avatarFileName:String? = null,
+            val source:String? = null,
+            val oauth:Oauth? = null,
+            val setting:Setting? = null,
+        ){
+            data class Setting(
+                val language:String? = null,
+                val postPageSize:Int? = null,
+                val commentPageSize:Int? = null,
+            )
+            data class Oauth(
+                val oauthName:String? = null,
+                val type:String? = null,
+                val login:String? = null,
+                val id:Int? = null,
+                val name:String? = null,
+                val email:String? = null,
+                val avatarUrl:String? = null,
+                val homepageUrl:String? = null,
+            )
+        }
+    }
+
+
 
     data class DetailListQuery(
         val query:PostID?,

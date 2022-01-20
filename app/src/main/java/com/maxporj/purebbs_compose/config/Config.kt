@@ -35,6 +35,16 @@ object Config {
 
     val DATABASE_NAME:String = "purebbs_database21"
 
+    fun calcTopAppBarAvatarPath(userInfo: UserInfo):String{
+        if (userInfo.avatarFileName != null) {
+            Log.d("PureBBS", "avatarFileName: ${userInfo.avatarFileName}")
+            return URL(BASE_URL, PATH_AVATAR + userInfo.avatarFileName).toString()
+        } else {
+            Log.d("PureBBS", "avatarFileName: default.png")
+            return URL(BASE_URL, PATH_AVATAR + "default.png").toString()
+        }
+    }
+
     fun calcAvatarPath(
         source: String?,
         avatarFileName: String?,

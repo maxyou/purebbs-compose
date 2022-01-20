@@ -1,5 +1,6 @@
 package com.maxporj.purebbs_compose.config
 
+import android.util.Log
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -22,7 +23,83 @@ class MyViewModel: ViewModel() {
         HttpService.api
     )
 
-    var loginRetrun = MutableStateFlow<HttpData.LoginReturn?>(null)
+    var userInfo = MutableStateFlow<UserInfo?>(null)
+//    var loginRetrun = MutableStateFlow<HttpData.LoginReturn?>(null)
+
+    fun getUserInfoFromUserStatus(userStatusReturn: HttpData.UserStatusReturn?):UserInfo?{
+
+        userStatusReturn?:return null
+        userStatusReturn.code?:return null
+
+        val userInfo = UserInfo(
+            loginType = "login",
+            code = userStatusReturn.code,
+            userStatusReturn = userStatusReturn
+        )
+
+        if(userStatusReturn.code == 0 && userStatusReturn.data!=null){
+            userInfo._id = userStatusReturn.data._id
+            userInfo.name = userStatusReturn.data.name
+            userInfo.email = userStatusReturn.data.email
+            userInfo.role = userStatusReturn.data.role
+            userInfo.updated = userStatusReturn.data.updated
+            userInfo.created = userStatusReturn.data.created
+            userInfo.avatarFileName = userStatusReturn.data.avatarFileName
+            userInfo.setting = userStatusReturn.data.setting
+            userInfo.source = userStatusReturn.data.source
+            userInfo.oauth = userStatusReturn.data.oauth
+        }
+
+        return userInfo
+    }
+
+    fun getUserInfoFromLogin(loginReturn: HttpData.LoginReturn?):UserInfo?{
+
+        loginReturn?:return null
+        loginReturn.code?:return null
+
+        val userInfo = UserInfo(
+            loginType = "login",
+            code = loginReturn.code,
+            loginReturn = loginReturn
+        )
+
+        if(loginReturn.code == 0 && loginReturn.data!=null){
+            userInfo._id = loginReturn.data._id
+            userInfo.name = loginReturn.data.name
+            userInfo.email = loginReturn.data.email
+            userInfo.role = loginReturn.data.role
+            userInfo.updated = loginReturn.data.updated
+            userInfo.created = loginReturn.data.created
+            userInfo.avatarFileName = loginReturn.data.avatarFileName
+            Log.d("PureBBS", "loginReturn.data.avatarFileName: ${loginReturn.data.avatarFileName}")
+        }
+
+        return userInfo
+    }
+    fun getUserInfoFromRegister(registerReturn: HttpData.RegisterReturn?):UserInfo?{
+
+        registerReturn?:return null
+        registerReturn.code?:return null
+
+        val userInfo = UserInfo(
+            loginType = "register",
+            code = registerReturn.code,
+            registerReturn = registerReturn
+        )
+
+        if(registerReturn.code == 0 && registerReturn.data!=null){
+            userInfo._id = registerReturn.data._id
+            userInfo.name = registerReturn.data.name
+            userInfo.email = registerReturn.data.email
+            userInfo.role = registerReturn.data.role
+            userInfo.updated = registerReturn.data.updated
+            userInfo.created = registerReturn.data.created
+        }
+
+        return userInfo
+    }
+
 
     val canNavigateBack = mutableStateOf(false)
 
