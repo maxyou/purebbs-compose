@@ -47,6 +47,11 @@ class HttpData {
         val message:String? = null,
     )
 
+    data class RegisterData(
+        val name:String,
+        val password:String,
+        val code:String
+    )
 
     data class RegisterReturn(
         val code:Int? = null,

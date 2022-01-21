@@ -64,6 +64,12 @@ fun App(myViewModel: MyViewModel) {
                 openLogoutDialog.value = !openLogoutDialog.value
             }
         }
+        if (openRegisterDialog.value) {
+            ShowRegister(myViewModel = myViewModel) {
+                openRegisterDialog.value = !openRegisterDialog.value
+            }
+        }
+
     }
 }
 
@@ -342,6 +348,209 @@ private fun LoginDialog(
     }
 }
 
+
+
+@Composable
+private fun ShowRegister(myViewModel: MyViewModel, onDismiss: () -> Unit) {
+
+    val thisContext = LocalContext.current
+    var name by remember { mutableStateOf("") }
+    var pwd by remember { mutableStateOf("") }
+    var code by remember { mutableStateOf("") }
+    var showPwd by remember { mutableStateOf(false) }
+    var registerError by remember { mutableStateOf("") }
+    var showRegisterError by remember { mutableStateOf(false) }
+    var confirmCount by remember { mutableStateOf(0) }
+
+    LaunchedEffect(confirmCount){
+        if(confirmCount != 0){
+
+            Log.d("PureBBS", "register confirm count: ${confirmCount}, name:${name}, pwd:${pwd}, code:${code}")
+
+            val registerReturn = HttpService.api.register(HttpData.RegisterData(
+                name = name, password = pwd, code = code
+            ))
+
+            Log.d("PureBBS", "register return code: ${registerReturn?.code}")
+            Log.d("PureBBS", "register return message: ${registerReturn?.message}")
+            Log.d("PureBBS", "register return data: ${registerReturn?.data.toString()}")
+
+            if(registerReturn!=null){
+                if(registerReturn.code!=0){
+                    registerError = "failed: ${registerReturn.message}"
+                    showRegisterError = true
+                }else{
+//                    myViewModel.loginRetrun.value = loginReturn
+                    myViewModel.userInfo.value = myViewModel.getUserInfoFromRegister(registerReturn)
+                    onDismiss()
+                }
+            }else{
+                registerError = "register return null"
+                showRegisterError = true
+            }
+
+        }
+    }
+
+
+    RegisterDialog(
+        onDismiss = onDismiss,
+        onNegativeClick = onDismiss,
+        onPositiveClick = { confirmCount++ },
+        name = name,
+        onNameChange = { name = it },
+        pwd = pwd,
+        onPwdChange = { pwd = it},
+        code = code,
+        onCodeChange = { code = it},
+        showPwd = showPwd,
+        onShowPwdChange = { showPwd = it},
+        registerError = registerError,
+        showRegisterError = showRegisterError
+    )
+}
+
+@Composable
+private fun RegisterDialog(
+    onDismiss: () -> Unit,
+    onNegativeClick: () -> Unit,
+    onPositiveClick: () -> Unit,
+    name:String,
+    onNameChange:(String)->Unit,
+    pwd:String,
+    onPwdChange:(String)->Unit,
+    code:String,
+    onCodeChange:(String)->Unit,
+    registerError:String,
+    showRegisterError:Boolean,
+    showPwd:Boolean,
+    onShowPwdChange:(Boolean)->Unit,
+) {
+    Dialog(onDismissRequest = onDismiss) {
+
+        Log.d("PureBBS", "showRegisterError: ${showRegisterError}")
+        Log.d("PureBBS", "registerError: ${registerError}")
+
+        var codeDownloadCount by remember { mutableStateOf(0) }
+
+        val path = Config.calcRandomCodeImgPath(codeDownloadCount)
+        Log.d("PureBBS", "random code img path: ${path}")
+
+        val painter = rememberImagePainter(
+            data = path,
+            builder = {
+                decoder(SvgDecoder(LocalContext.current))
+            }
+        )
+
+        Card(
+            elevation = 8.dp,
+            shape = RoundedCornerShape(12.dp)
+        ) {
+
+            Column(modifier = Modifier.padding(8.dp)) {
+
+                Text(
+                    text = "Register",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp,
+                    modifier = Modifier.padding(8.dp)
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+
+                OutlinedTextField(
+                    value = name,
+                    onValueChange = {
+                        onNameChange(it)
+                    },
+                    singleLine = true,
+                    maxLines = 1,
+                    label = { Text("Name") }
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                OutlinedTextField(
+                    value = pwd,
+                    onValueChange = {
+                        onPwdChange(it)
+                    },
+                    singleLine = true,
+                    maxLines = 1,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    visualTransformation = if (showPwd) VisualTransformation.None else PasswordVisualTransformation(),
+                    label = { Text("Password") }
+                )
+
+                Row {
+                    Checkbox(
+                        // below line we are setting
+                        // the state of checkbox.
+                        checked = showPwd,
+                        // below line is use to add padding
+                        // to our checkbox.
+                        modifier = Modifier.padding(16.dp),
+                        // below line is use to add on check
+                        // change to our checkbox.
+                        onCheckedChange = { onShowPwdChange(it) },
+                    )
+                    // below line is use to add text to our check box and we are
+                    // adding padding to our text of checkbox
+                    Text(text = "View Password", modifier = Modifier.padding(16.dp))
+                }
+
+                OutlinedTextField(
+                    value = code,
+                    onValueChange = {
+                        onCodeChange(it)
+                    },
+                    singleLine = true,
+                    maxLines = 1,
+                    label = { Text("Code") }
+                )
+
+                Image(
+                    painter = painter,
+                    contentDescription = "image",
+                    modifier = Modifier
+                        .clickable { codeDownloadCount++ }
+                        .width(250.dp)
+                        .height(75.dp)
+                        .wrapContentSize(align = Alignment.CenterStart, unbounded = false)
+                        .padding(10.dp)
+                )
+
+                Text(
+                    text = if(showRegisterError) registerError else "",
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .height(30.dp)
+                        .fillMaxWidth()
+                )
+//                if(showLoginError){
+//                }
+
+                // Buttons
+                Row(
+                    horizontalArrangement = Arrangement.End,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    TextButton(onClick = onNegativeClick) {
+                        Text(text = "CANCEL")
+                    }
+                    Spacer(modifier = Modifier.width(4.dp))
+                    TextButton(onClick = onPositiveClick) {
+                        Text(text = "OK")
+                    }
+                }
+
+            }
+        }
+    }
+}
+
+
+
 @Composable
 private fun ShowScaffold(
     myViewModel: MyViewModel,
@@ -458,6 +667,7 @@ private fun ShowScaffold(
 
                                 DropdownMenuItem(onClick = {
                                     expanded.value = false
+                                    openRegisterDialog.value = true
                                 }) {
                                     Text("Register")
                                 }

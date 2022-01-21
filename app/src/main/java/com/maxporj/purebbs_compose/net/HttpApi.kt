@@ -8,6 +8,11 @@ import retrofit2.http.Query
 
 interface HttpApi {
 
+    @POST("user/register")
+    suspend fun register(
+        @Body loginData:HttpData.RegisterData
+    ): HttpData.RegisterReturn?
+
     @POST("user/login")
     suspend fun login(
         @Body loginData:HttpData.LoginData
