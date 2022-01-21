@@ -21,7 +21,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -43,13 +42,102 @@ fun App(myViewModel: MyViewModel) {
 
         val navController = rememberNavController()
 
-        val openDialog = remember { mutableStateOf(false) }
+        val openLoginDialog = remember { mutableStateOf(false) }
+        val openLogoutDialog = remember { mutableStateOf(false) }
+        val openRegisterDialog = remember { mutableStateOf(false) }
 
-        ShowScaffold(myViewModel, navController, openDialog)
+        ShowScaffold(
+            myViewModel = myViewModel,
+            navController = navController,
+            openLoginDialog = openLoginDialog,
+            openLogoutDialog = openLogoutDialog,
+            openRegisterDialog = openRegisterDialog,
+        )
 
-        if (openDialog.value) {
+        if (openLoginDialog.value) {
             ShowLogin(myViewModel = myViewModel) {
-                openDialog.value = !openDialog.value
+                openLoginDialog.value = !openLoginDialog.value
+            }
+        }
+        if (openLogoutDialog.value) {
+            ShowLogout(myViewModel = myViewModel) {
+                openLogoutDialog.value = !openLogoutDialog.value
+            }
+        }
+    }
+}
+
+
+@Composable
+private fun ShowLogout(myViewModel: MyViewModel, onDismiss: () -> Unit) {
+
+    var confirmCount by remember { mutableStateOf(0) }
+
+    LaunchedEffect(confirmCount){
+
+        Log.d("PureBBS", "logout confirm count: ${confirmCount}")
+
+        if(confirmCount != 0){
+            val logoutReturn = HttpService.api.logout(HttpData.LogoutData(
+                language = myViewModel.userInfo.value?.setting?.language?:"en",
+                postPageSize = myViewModel.userInfo.value?.setting?.postPageSize?:10,
+                commentPageSize = myViewModel.userInfo.value?.setting?.commentPageSize?:10
+            ))
+
+            Log.d("PureBBS", "login return code: ${logoutReturn?.code}")
+            Log.d("PureBBS", "login return message: ${logoutReturn?.message}")
+
+            myViewModel.userInfo.value = null
+            onDismiss()
+
+        }
+    }
+
+    LogoutDialog(
+        onDismiss = onDismiss,
+        onNegativeClick = onDismiss,
+        onPositiveClick = { confirmCount++ },
+    )
+}
+
+@Composable
+private fun LogoutDialog(
+    onDismiss: () -> Unit,
+    onNegativeClick: () -> Unit,
+    onPositiveClick: () -> Unit,
+) {
+    Dialog(onDismissRequest = onDismiss) {
+
+        Card(
+            elevation = 8.dp,
+            shape = RoundedCornerShape(12.dp)
+        ) {
+
+            Column(modifier = Modifier.padding(8.dp)) {
+
+                Text(
+                    text = "Logout",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp,
+                    modifier = Modifier.padding(8.dp)
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+
+
+                // Buttons
+                Row(
+                    horizontalArrangement = Arrangement.End,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    TextButton(onClick = onNegativeClick) {
+                        Text(text = "CANCEL")
+                    }
+                    Spacer(modifier = Modifier.width(4.dp))
+                    TextButton(onClick = onPositiveClick) {
+                        Text(text = "OK")
+                    }
+                }
+
             }
         }
     }
@@ -258,7 +346,9 @@ private fun LoginDialog(
 private fun ShowScaffold(
     myViewModel: MyViewModel,
     navController: NavHostController,
-    openDialog: MutableState<Boolean>
+    openLoginDialog: MutableState<Boolean>,
+    openLogoutDialog: MutableState<Boolean>,
+    openRegisterDialog: MutableState<Boolean>,
 ) {
 //    val loginRetrun by myViewModel.loginRetrun.collectAsState()
     val userInfo by myViewModel.userInfo.collectAsState()
@@ -347,35 +437,36 @@ private fun ShowScaffold(
                             expanded = expanded.value,
                             onDismissRequest = { expanded.value = false },
                         ) {
-                            DropdownMenuItem(onClick = {
-                                expanded.value = false
-                                openDialog.value = true
 
-                            }) {
-                                Text("Login")
+                            if(userInfo!=null && userInfo!!.code == 0){
+
+                                DropdownMenuItem(onClick = {
+                                    expanded.value = false
+                                    openLogoutDialog.value = true
+                                }) {
+                                    Text("Logout")
+                                }
+
+                            }else{
+
+                                DropdownMenuItem(onClick = {
+                                    expanded.value = false
+                                    openLoginDialog.value = true
+                                }) {
+                                    Text("Login")
+                                }
+
+                                DropdownMenuItem(onClick = {
+                                    expanded.value = false
+                                }) {
+                                    Text("Register")
+                                }
+
                             }
 
-                            DropdownMenuItem(onClick = {
-                                expanded.value = false
-                            }) {
-                                Text("Second item")
-                            }
 
-                            Divider()
+//                            Divider()
 
-                            DropdownMenuItem(onClick = {
-                                expanded.value = false
-                            }) {
-                                Text("Third item")
-                            }
-
-                            Divider()
-
-                            DropdownMenuItem(onClick = {
-                                expanded.value = false
-                            }) {
-                                Text("Fourth item")
-                            }
                         }
                     }
                 },

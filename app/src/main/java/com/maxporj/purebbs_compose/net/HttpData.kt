@@ -36,6 +36,18 @@ class HttpData {
         }
     }
 
+    data class LogoutData(
+        val language:String = "en",
+        val postPageSize:Int = 10,
+        val commentPageSize:Int = 10
+    )
+
+    data class LogoutReturn(
+        val code:Int? = null,
+        val message:String? = null,
+    )
+
+
     data class RegisterReturn(
         val code:Int? = null,
         val message:String? = null,

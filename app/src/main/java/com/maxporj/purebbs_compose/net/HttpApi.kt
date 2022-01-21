@@ -13,6 +13,11 @@ interface HttpApi {
         @Body loginData:HttpData.LoginData
     ): HttpData.LoginReturn?
 
+    @POST("user/logout")
+    suspend fun logout(
+        @Body loginData:HttpData.LogoutData
+    ): HttpData.LogoutReturn?
+
     @GET("detail/comment/getpage")
     suspend fun getDetailByPaginate(
         @Query("pageInfo") pageInfo: String
