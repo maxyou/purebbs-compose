@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
@@ -39,15 +40,14 @@ fun PostLayout(
         modifier = Modifier.padding(15.dp)
     ) {
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(40.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
+        Box(modifier = Modifier
+            .padding(5.dp)
+            .fillMaxWidth(1f)
+            .height(40.dp)
+            .clip(RoundedCornerShape(5.dp))
+            .background(Color(0xffccccff)),
+            contentAlignment = Alignment.Center
         ) {
-            Button(onClick = { /*TODO*/ }) {
-                Text(text = "Add")
-            }
             PageRound(
                 current = current,
                 ext = 2,
@@ -58,14 +58,19 @@ fun PostLayout(
                 RoundInterval = RoundInterval
             )
         }
-
 //    PostList(posts, goToDetail, myViewModel)
         PostList(myViewModel.postList.value, goToDetail, myViewModel)
     }
 }
 
 val RoundInterval = @Composable {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(2.dp)
+            .background(Color(0x22AC9C95)),
+        contentAlignment = Alignment.Center
+    ) {
         Text(text = "---")
     }
 }
@@ -73,10 +78,12 @@ val RoundInterval = @Composable {
 val RoundButton = @Composable { count: Int, isCurrent: Boolean, onClick: (Int) -> Unit ->
     Box(
         modifier = Modifier
+            .padding(2.dp)
+            .aspectRatio(1f)
+            .clip(CircleShape)
             .fillMaxSize()
             .clickable { onClick(count) }
-            .padding(2.dp)
-            .background(if (isCurrent) Color(0xFF9CCC65) else Color(0xFFbC4Ca5)),
+            .background(if (isCurrent) Color(0xFFACDC75) else Color(0xFF6C9C35)),
         contentAlignment = Alignment.Center
     ) {
         Text(text = "${count}")
@@ -141,24 +148,24 @@ fun PostList(posts: List<Post>?, goToDetail: (String) -> Unit, myViewModel: MyVi
 }
 
 
-@Composable
-fun RoundButton(count: Int, isCurrent: Boolean, onClick: (Int) -> Unit) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .clickable { onClick(count) }
-            .padding(2.dp)
-            .background(if (isCurrent) Color(0xFF9CCC65) else Color(0xFFbC4Ca5)),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(text = "${count}")
-    }
-}
-
-@Composable
-fun RoundInterval() {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text(text = "---")
-    }
-}
+//@Composable
+//fun RoundButton(count: Int, isCurrent: Boolean, onClick: (Int) -> Unit) {
+//    Box(
+//        modifier = Modifier
+//            .fillMaxSize()
+//            .clickable { onClick(count) }
+//            .padding(2.dp)
+//            .background(if (isCurrent) Color(0xFF9CCC65) else Color(0xFFbC4Ca5)),
+//        contentAlignment = Alignment.Center
+//    ) {
+//        Text(text = "${count}")
+//    }
+//}
+//
+//@Composable
+//fun RoundInterval() {
+//    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+//        Text(text = "---")
+//    }
+//}
 
