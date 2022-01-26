@@ -52,7 +52,6 @@ class MyViewModel: ViewModel() {
 
         return userInfo
     }
-
     fun getUserInfoFromLogin(loginReturn: HttpData.LoginReturn?):UserInfo?{
 
         loginReturn?:return null

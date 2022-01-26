@@ -14,7 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,8 +38,11 @@ fun DetailLayout(
     id:String?,
     backToPost:()->Unit
 ){
-    val context = LocalContext.current
-    val scrollState = rememberScrollState()
+
+    val detail = myViewModel.postList.value.firstOrNull { it.postId == id }?.content
+
+    LaunchedEffect(""){
+    }
 
     Column(
         modifier = Modifier.padding(15.dp)
@@ -54,7 +57,6 @@ fun DetailLayout(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.End
         ) {
-
             Text(text = "删除")
             Text(text = "编辑")
             Text(text = "评论")
@@ -68,25 +70,14 @@ fun DetailLayout(
                 .weight(weight =1f, fill = false)
 
         ) {
-            Text(//modifier = Modifier.scrollable(state = scrollState,orientation = Orientation.Vertical),
-                text = "content" +
-                        "QQQQQQQQQQQQ" +
-                        "&&&&&&&&&&&&" +
-                        "QQQQQQQQQQQQ" +
-                        "$$$$$$$$$$$$" +
-                        "QQQQQQQQQQQQ" +
-                        "@@@@@@@@@@@@" +
-                        "QQQQQQQQQQQQ" +
-                        "############",
-                fontSize = 50.sp,
-            )
-
+            SelectionContainer{
+                Text(
+                    text = detail?:"no content",
+                    fontSize = 14.sp,
+                )
+            }
         }
 
-
-//        SelectionContainer{
-//            Text(text = "content")
-//        }
     }
 
 }
