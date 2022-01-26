@@ -48,19 +48,19 @@ fun DetailLayout(
         modifier = Modifier.padding(15.dp)
     ) {
 
-        Row(modifier = Modifier
-            .padding(5.dp)
-            .fillMaxWidth(1f)
-            .height(40.dp)
-            .clip(RoundedCornerShape(5.dp))
-            .background(Color(0xffccccff)),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.End
-        ) {
-            Text(text = "删除")
-            Text(text = "编辑")
-            Text(text = "评论")
-        }
+//        Row(modifier = Modifier
+//            .padding(5.dp)
+//            .fillMaxWidth(1f)
+//            .height(40.dp)
+//            .clip(RoundedCornerShape(5.dp))
+//            .background(Color(0xffccccff)),
+//            verticalAlignment = Alignment.CenterVertically,
+//            horizontalArrangement = Arrangement.End
+//        ) {
+//            Text(text = "删除")
+//            Text(text = "编辑")
+//            Text(text = "评论")
+//        }
 
         Column(
             modifier = Modifier
