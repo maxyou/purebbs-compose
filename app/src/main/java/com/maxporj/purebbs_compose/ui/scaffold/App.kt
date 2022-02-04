@@ -618,7 +618,7 @@ private fun ShowScaffold(
                             painter = painter,
                             contentDescription = "image",
                             modifier = Modifier
-                                .clickable {  }
+                                .clickable { }
                                 .width(30.dp)
                                 .aspectRatio(1f)
                                 .clip(CircleShape)
@@ -685,6 +685,9 @@ private fun ShowScaffold(
                 elevation = AppBarDefaults.TopAppBarElevation
             )
         },
+        drawerContent = {
+            Drawer(myViewModel = myViewModel)
+        }
     ) { innerPadding ->
         GetNavHost(navController, modifier = Modifier.padding(innerPadding))
     }
