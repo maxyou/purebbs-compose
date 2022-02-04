@@ -35,6 +35,7 @@ import com.maxporj.purebbs_compose.net.HttpData
 import com.maxporj.purebbs_compose.net.HttpService
 import com.maxporj.purebbs_compose.ui.route.GetNavHost
 import com.maxporj.purebbs_compose.ui.theme.PurebbscomposeTheme
+import kotlinx.coroutines.launch
 
 @Composable
 fun App(myViewModel: MyViewModel) {
@@ -562,7 +563,11 @@ private fun ShowScaffold(
 //    val loginRetrun by myViewModel.loginRetrun.collectAsState()
     val userInfo by myViewModel.userInfo.collectAsState()
 
+    val scaffoldState = rememberScaffoldState()
+    val scope = rememberCoroutineScope()
+
     Scaffold(
+        scaffoldState = scaffoldState,
         backgroundColor = colorResource(R.color.purple_200),
         topBar = {
             TopAppBar(
@@ -576,6 +581,12 @@ private fun ShowScaffold(
                             if (myViewModel.canNavigateBack.value) {
                                 navController.navigateUp()
                                 myViewModel.canNavigateBack.value = false
+                            }else{
+                                scope.launch {
+                                    scaffoldState.drawerState.apply {
+                                        if (isClosed) open() else close()
+                                    }
+                                }
                             }
                         }
                     ) {
