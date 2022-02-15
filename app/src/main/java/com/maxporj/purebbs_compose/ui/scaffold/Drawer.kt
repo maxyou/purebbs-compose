@@ -5,8 +5,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -19,16 +21,25 @@ import com.maxporj.purebbs_compose.config.Config
 import com.maxporj.purebbs_compose.config.MyViewModel
 
 @Composable
-fun Drawer(myViewModel: MyViewModel) {
+fun Drawer(
+    myViewModel: MyViewModel,
+    openLoginDialog: MutableState<Boolean>,
+    openLogoutDialog: MutableState<Boolean>,
+    openRegisterDialog: MutableState<Boolean>,
+) {
 
     val userInfo by myViewModel.userInfo.collectAsState()
 
-    Column() {
+    Column {
 
-        Box(
-            Modifier.height(200.dp).fillMaxWidth()
-                .background(color = Color(0xff999fff))
-                .wrapContentSize(Alignment.Center)
+        Column(
+            Modifier
+                .height(200.dp)
+                .fillMaxWidth()
+                .background(color = Color(0xff999fff)),
+//                .wrapContentSize(Alignment.Center),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
         ){
             if(userInfo!=null && userInfo!!.code == 0){
 
@@ -50,8 +61,17 @@ fun Drawer(myViewModel: MyViewModel) {
                         .aspectRatio(1f)
                         .clip(CircleShape)
                 )
+
+                Button(onClick = { openLogoutDialog.value = true }, modifier = Modifier.padding(10.dp).width(100.dp)) {
+                    Text(text = "Logout")
+                }
             }else{
-                Text(text = "Login")
+                Button(onClick = { openLoginDialog.value = true }, modifier = Modifier.padding(10.dp).width(100.dp)) {
+                    Text(text = "Login")
+                }
+                Button(onClick = { openRegisterDialog.value = true }, modifier = Modifier.padding(10.dp).width(100.dp)) {
+                    Text(text = "Register")
+                }
             }
         }
     }

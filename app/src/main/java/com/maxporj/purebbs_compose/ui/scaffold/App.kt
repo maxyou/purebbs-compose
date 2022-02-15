@@ -604,37 +604,27 @@ private fun ShowScaffold(
 
                 actions = {
 
-                    if(userInfo!=null && userInfo!!.code == 0){
-
-                        val path = Config.calcTopAppBarAvatarPath(userInfo!!)
-
-                        val painter = rememberImagePainter(
-                            data = path,
-                            builder = {
-                                crossfade(true)
-                            }
-                        )
-//                        IconButton(onClick = {
+//                    if(userInfo!=null && userInfo!!.code == 0){
 //
-//                        }) {
-//                            Icon(painter = painter,
-//                                contentDescription = "",
-//                                modifier = Modifier
+//                        val path = Config.calcTopAppBarAvatarPath(userInfo!!)
+//
+//                        val painter = rememberImagePainter(
+//                            data = path,
+//                            builder = {
+//                                crossfade(true)
+//                            }
+//                        )
+//
+//                        Image(
+//                            painter = painter,
+//                            contentDescription = "image",
+//                            modifier = Modifier
+//                                .clickable { }
 //                                .width(30.dp)
 //                                .aspectRatio(1f)
-//                                .clip(CircleShape))
-//                        }
-
-                        Image(
-                            painter = painter,
-                            contentDescription = "image",
-                            modifier = Modifier
-                                .clickable { }
-                                .width(30.dp)
-                                .aspectRatio(1f)
-                                .clip(CircleShape)
-                        )
-                    }
+//                                .clip(CircleShape)
+//                        )
+//                    }
 
 
                     Box(
@@ -697,7 +687,12 @@ private fun ShowScaffold(
             )
         },
         drawerContent = {
-            Drawer(myViewModel = myViewModel)
+            Drawer(
+                myViewModel = myViewModel,
+                openLoginDialog = openLoginDialog,
+                openLogoutDialog = openLogoutDialog,
+                openRegisterDialog = openRegisterDialog
+            )
         }
     ) { innerPadding ->
         GetNavHost(navController, modifier = Modifier.padding(innerPadding))
