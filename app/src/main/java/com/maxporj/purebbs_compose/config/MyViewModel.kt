@@ -104,9 +104,6 @@ class MyViewModel: ViewModel() {
         return userInfo
     }
 
-
-    val canNavigateBack = mutableStateOf(false)
-
     val postList = mutableStateOf(emptyList<Post>())
 //    val postPageSize by mutableStateOf(10)
 //    val postPageIndex by mutableStateOf(0)

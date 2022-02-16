@@ -36,6 +36,7 @@ import com.maxporj.purebbs_compose.config.MyViewModel
 import com.maxporj.purebbs_compose.net.HttpData
 import com.maxporj.purebbs_compose.net.HttpService
 import com.maxporj.purebbs_compose.ui.route.GetNavHost
+import com.maxporj.purebbs_compose.ui.route.Page
 import com.maxporj.purebbs_compose.ui.theme.PurebbscomposeTheme
 import kotlinx.coroutines.launch
 
@@ -583,9 +584,9 @@ private fun ShowScaffold(
                     IconButton(
                         onClick = {
                             // if(navController.previousBackStackEntry != null){
-                            if (myViewModel.canNavigateBack.value) {
+                             if(currentDestination?.route != Page.PostList.name){
+//                            if (myViewModel.canNavigateBack.value) {
                                 navController.navigateUp()
-                                myViewModel.canNavigateBack.value = false
                             }else{
                                 scope.launch {
                                     scaffoldState.drawerState.apply {
@@ -596,7 +597,8 @@ private fun ShowScaffold(
                         }
                     ) {
                         // if (navController.previousBackStackEntry != null){
-                        if (myViewModel.canNavigateBack.value) {
+                         if (currentDestination?.route != Page.PostList.name){
+//                        if (myViewModel.canNavigateBack.value) {
                             Icon(
                                 imageVector = Icons.Filled.ArrowBack,
                                 contentDescription = "Back"

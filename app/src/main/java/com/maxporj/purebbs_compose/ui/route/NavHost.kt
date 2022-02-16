@@ -35,7 +35,6 @@ fun GetNavHost(
         ) {
             PostLayout {
                 navController.navigate(it)
-                myViewModel.canNavigateBack.value = true
             }
         }
         composable(
@@ -50,7 +49,6 @@ fun GetNavHost(
                 id = it.arguments?.getString("id")
             ) {
                 navController.popBackStack()
-                myViewModel.canNavigateBack.value = false
             }
         }
     }
