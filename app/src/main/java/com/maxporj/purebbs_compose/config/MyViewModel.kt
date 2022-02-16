@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavBackStackEntry
 import com.maxporj.purebbs_compose.config.Config.application
 import com.maxporj.purebbs_compose.net.HttpData
 import com.maxporj.purebbs_compose.net.HttpService
@@ -22,6 +23,10 @@ class MyViewModel: ViewModel() {
         MyRoomDatabase.getDatabase(application, viewModelScope).detailDao(),
         HttpService.api
     )
+
+    fun showActions(userInfo: UserInfo?, route: String?){
+
+    }
 
     var userInfo = MutableStateFlow<UserInfo?>(null)
 //    var loginRetrun = MutableStateFlow<HttpData.LoginReturn?>(null)

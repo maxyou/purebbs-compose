@@ -24,7 +24,9 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberImagePainter
 import coil.decode.SvgDecoder
@@ -566,6 +568,9 @@ private fun ShowScaffold(
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
 
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+
     Scaffold(
         scaffoldState = scaffoldState,
         backgroundColor = colorResource(R.color.purple_200),
@@ -648,32 +653,38 @@ private fun ShowScaffold(
                             onDismissRequest = { expanded.value = false },
                         ) {
 
-                            if(userInfo!=null && userInfo!!.code == 0){
+                            val actions = myViewModel.showActions(userInfo, currentDestination?.route)
+//                                    val s = StringBuilder("")
+//                                    currentDestination?.hierarchy?.toList()?.forEach { s.append("-${it.route}") }
+//                                    Log.d("PureBBS", "currentDestination: ${currentDestination?.hierarchy?.toList()?.toString()}")
 
-                                DropdownMenuItem(onClick = {
-                                    expanded.value = false
-                                    openLogoutDialog.value = true
-                                }) {
-                                    Text("Logout")
-                                }
 
-                            }else{
-
-                                DropdownMenuItem(onClick = {
-                                    expanded.value = false
-                                    openLoginDialog.value = true
-                                }) {
-                                    Text("Login")
-                                }
-
-                                DropdownMenuItem(onClick = {
-                                    expanded.value = false
-                                    openRegisterDialog.value = true
-                                }) {
-                                    Text("Register")
-                                }
-
-                            }
+//                            if(userInfo!=null && userInfo!!.code == 0){
+//
+//                                DropdownMenuItem(onClick = {
+//                                    expanded.value = false
+//                                    openLogoutDialog.value = true
+//                                }) {
+//                                    Text("Logout")
+//                                }
+//
+//                            }else{
+//
+//                                DropdownMenuItem(onClick = {
+//                                    expanded.value = false
+//                                    openLoginDialog.value = true
+//                                }) {
+//                                    Text("Login")
+//                                }
+//
+//                                DropdownMenuItem(onClick = {
+//                                    expanded.value = false
+//                                    openRegisterDialog.value = true
+//                                }) {
+//                                    Text("Register")
+//                                }
+//
+//                            }
 
 
 //                            Divider()
